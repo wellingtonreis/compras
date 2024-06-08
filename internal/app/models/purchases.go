@@ -8,6 +8,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Data struct {
@@ -18,8 +19,9 @@ type CatalogCode struct {
 	Catmat            string         `json:"catmat"`
 	Apresentacao      string         `json:"apresentacao"`
 	Quantidade        string         `json:"quantidade"`
-	Resultado         []ItemPurchase `json:"resultado"`
-	ResultadoFiltrado []ItemPurchase `json:"resultadoFiltrado"`
+	Cotacao           string         `json:"cotacao"`
+	DadosAPI          []ItemPurchase `json:"dadosapi"`
+	DadosConsolidados []ItemPurchase `json:"dadosconsolidados"`
 }
 
 type ItemPurchase struct {
@@ -73,16 +75,16 @@ func FilterDocumentsByPresentation(db *mongodb.MongoDB) ([]CatalogCode, error) {
 	pipeline := mongo.Pipeline{
 		{{"$match", bson.M{"apresentacao": bson.M{"$exists": true}}}},
 		{{"$addFields", bson.D{
-			{"resultadoFiltrado", bson.M{"$filter": bson.M{
-				"input": "$resultado",
+			{"dadosconsolidados", bson.M{"$filter": bson.M{
+				"input": "$dadosapi",
 				"as":    "item",
 				"cond":  bson.M{"$eq": []interface{}{"$$item.nomeunidadefornecimento", "$apresentacao"}},
 			}}},
 		}}},
-		{{"$match", bson.M{"resultadoFiltrado": bson.M{"$ne": []interface{}{}}}}},
+		{{"$match", bson.M{"dadosconsolidados": bson.M{"$ne": []interface{}{}}}}},
 		{{"$addFields", bson.D{
-			{"resultadoFiltrado", bson.M{"$filter": bson.M{
-				"input": "$resultadoFiltrado",
+			{"dadosconsolidados", bson.M{"$filter": bson.M{
+				"input": "$dadosconsolidados",
 				"as":    "item",
 				"cond": bson.M{
 					"$or": []interface{}{
@@ -107,35 +109,47 @@ func FilterDocumentsByPresentation(db *mongodb.MongoDB) ([]CatalogCode, error) {
 
 	cursor, err := collection.Aggregate(ctx, pipeline)
 	if err != nil {
-		return nil, fmt.Errorf("error executing aggregate query: %v", err)
+		return nil, fmt.Errorf("erro ao executar a consulta de agregação: %v", err)
 	}
 	defer cursor.Close(ctx)
 
+	var docs []CatalogCode
+	if err = cursor.All(ctx, &docs); err != nil {
+		return nil, fmt.Errorf("erro ao tentar ler todos os documentos: %v", err)
+	}
+
 	var updatedDocuments []CatalogCode
 
-	for cursor.Next(ctx) {
-		var doc CatalogCode
-		if err := cursor.Decode(&doc); err != nil {
-			return nil, fmt.Errorf("error decoding document: %v", err)
+	for _, doc := range docs {
+		filter := bson.M{"catmat": doc.Catmat, "cotacao": doc.Cotacao}
+		update := bson.M{
+			"$set": bson.M{
+				"dadosapi":          nil,
+				"dadosconsolidados": doc.DadosConsolidados,
+			},
 		}
 
-		if _, err := collection.DeleteOne(ctx, bson.M{"catmat": doc.Catmat}); err != nil {
-			return nil, fmt.Errorf("error deleting document: %v", err)
-		}
-
-		doc.Resultado = doc.ResultadoFiltrado
-		doc.ResultadoFiltrado = nil
-
-		if _, err := collection.InsertOne(ctx, doc); err != nil {
-			return nil, fmt.Errorf("error inserting document: %v", err)
+		opts := options.Update().SetUpsert(true)
+		if _, err := collection.UpdateOne(ctx, filter, update, opts); err != nil {
+			return nil, fmt.Errorf("erro ao tentar atualizar o documento: %v", err)
 		}
 
 		updatedDocuments = append(updatedDocuments, doc)
 	}
 
-	if err := cursor.Err(); err != nil {
-		return nil, fmt.Errorf("cursor error: %v", err)
-	}
+	// for _, doc := range docs {
+
+	// 	if _, err := collection.DeleteOne(ctx, bson.M{"catmat": doc.Catmat, "cotacao": doc.Cotacao}); err != nil {
+	// 		return nil, fmt.Errorf("erro ao tentar deletar o documento: %v", err)
+	// 	}
+
+	// 	doc.DadosAPI = nil
+	// 	if _, err := collection.InsertOne(ctx, doc); err != nil {
+	// 		return nil, fmt.Errorf("erro ao tentar inserir o documento: %v", err)
+	// 	}
+
+	// 	updatedDocuments = append(updatedDocuments, doc)
+	// }
 
 	return updatedDocuments, nil
 }

@@ -15,6 +15,8 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 func receiveAttachment(r *http.Request) (multipart.File, string, error) {
@@ -77,10 +79,11 @@ func fileScanning(ext string, tempFileName string) ([][]string, error) {
 	return data, nil
 }
 
-func handlesData(data [][]string) []models.CatalogCode {
+func handlesData(data [][]string) *[]models.CatalogCode {
 	convertedData := make([]models.CatalogCode, 0)
 	api := dadosabertos.FnDadosAbertosComprasGov()
 
+	uuid := uuid.New().String()
 	for i, record := range data {
 		if i == 0 {
 			continue
@@ -88,6 +91,7 @@ func handlesData(data [][]string) []models.CatalogCode {
 
 		result, err := api.ConsultarMaterial(record[0])
 		if err != nil {
+			log.Fatal("Error: ", err)
 			panic("Erro ao tentar consultar os itens de compras")
 		}
 
@@ -95,11 +99,12 @@ func handlesData(data [][]string) []models.CatalogCode {
 			Catmat:       record[0],
 			Apresentacao: record[1],
 			Quantidade:   record[2],
-			Resultado:    result,
+			Cotacao:      uuid,
+			DadosAPI:     result,
 		}
 		convertedData = append(convertedData, item)
 	}
-	return convertedData
+	return &convertedData
 }
 
 func saveData(data models.Data) {
@@ -122,7 +127,7 @@ func saveData(data models.Data) {
 	}
 }
 
-func findLatest() []models.CatalogCode {
+func findLatest() *[]models.CatalogCode {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	db, err := mongodb.NewConnectionMongoDB(ctx)
@@ -134,7 +139,7 @@ func findLatest() []models.CatalogCode {
 	if err != nil {
 		log.Fatalf("Failed to filter documents: %v", err)
 	}
-	return catalogData
+	return &catalogData
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
@@ -172,14 +177,14 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	convertedData := handlesData(data)
 	responseData := models.Data{
-		Catalog: convertedData,
+		Catalog: *convertedData,
 	}
 
 	saveData(responseData)
 	catalogData := findLatest()
 
 	filtered := models.Data{
-		Catalog: catalogData,
+		Catalog: *catalogData,
 	}
 
 	jsonData, err := json.Marshal(filtered)

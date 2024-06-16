@@ -15,6 +15,14 @@ const routes = [
     ]
   },
 
+  {
+    path: '/importacao',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+        {name: 'importar-itens-compras', path: 'importar-itens-compras', component: () => import('pages/importacao/ImportarItensCompras.vue')},
+    ]
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {

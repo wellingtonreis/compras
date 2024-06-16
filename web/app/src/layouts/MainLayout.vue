@@ -137,7 +137,7 @@ const linksList = [
     title: "Importar",
     caption: "Adicionar cotação",
     icon: "file_upload",
-    link: "",
+    link: "/importacao/importar-itens-compras",
   },
 ];
 

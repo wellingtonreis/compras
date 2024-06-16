@@ -1,12 +1,7 @@
 package handler
 
 import (
-	"compras/internal/app/models"
-	"compras/internal/app/platform/database/mongodb"
-	"compras/pkg/importer"
-	dadosabertos "compras/pkg/service/compras/dados_abertos"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -15,6 +10,14 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	models "github.com/wellingtonreis/compras/internal/app/models/purchases"
+
+	dadosabertos "github.com/wellingtonreis/compras/pkg/service/compras/dados_abertos"
+
+	"github.com/wellingtonreis/compras/internal/app/platform/database/mongodb"
+	"github.com/wellingtonreis/compras/pkg/importer"
+	"github.com/wellingtonreis/compras/pkg/response"
 
 	"github.com/google/uuid"
 )
@@ -83,6 +86,14 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 	convertedData := make([]models.CatalogCode, 0)
 	api := dadosabertos.FnDadosAbertosComprasGov()
 
+	now := time.Now().UTC()
+	year, month, day := now.Date()
+	hour := now.Hour()
+	minute := now.Minute()
+	second := now.Second()
+
+	today := time.Date(year, month, day, hour, minute, second, 0, time.FixedZone("", -3*60*60))
+
 	uuid := uuid.New().String()
 	for i, record := range data {
 		if i == 0 {
@@ -100,6 +111,13 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 			Apresentacao: record[1],
 			Quantidade:   record[2],
 			Cotacao:      uuid,
+			Hu:           "",
+			Categoria:    "",
+			Subcategoria: "",
+			DataHora:     today,
+			Situacao:     "Iniciada",
+			ProcessoSei:  "",
+			Autor:        "",
 			DadosAPI:     result,
 		}
 		convertedData = append(convertedData, item)
@@ -135,7 +153,7 @@ func findLatest() *[]models.CatalogCode {
 		log.Fatal("Error connecting to MongoDB:", err)
 	}
 	defer db.Close()
-	catalogData, err := models.FilterDocumentsByPresentation(db)
+	catalogData, err := models.SavePurchaseItemDocuments(db)
 	if err != nil {
 		log.Fatalf("Failed to filter documents: %v", err)
 	}
@@ -187,12 +205,15 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		Catalog: *catalogData,
 	}
 
-	jsonData, err := json.Marshal(filtered)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	params := response.ResponseParams{
+		StatusCode: 200,
+		Message:    "Operação realizada com sucesso.",
+		Embedded:   filtered,
+		Next:       "_",
+		Total:      len(filtered.Catalog),
 	}
 
+	jsonResponse := response.CreateJSONResponse(params)
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(jsonData)
+	w.Write([]byte(jsonResponse))
 }

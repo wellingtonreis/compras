@@ -1,11 +1,12 @@
 package dadosabertos
 
 import (
-	"compras/internal/app/models"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+
+	models "github.com/wellingtonreis/compras/internal/app/models/purchases"
 )
 
 type DadosAbertosComprasGov struct {

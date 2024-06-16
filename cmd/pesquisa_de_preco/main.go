@@ -1,9 +1,10 @@
 package main
 
 import (
-	"compras/internal/app/handler"
 	"log"
 	"net/http"
+
+	"github.com/wellingtonreis/compras/internal/app/handler"
 )
 
 func main() {

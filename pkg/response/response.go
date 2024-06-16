@@ -6,19 +6,19 @@ import (
 )
 
 type Response struct {
-	Error      string                 `json:"error,omitempty"`
-	StatusCode int                    `json:"status_code"`
-	Message    string                 `json:"message"`
-	Embedded   map[string]interface{} `json:"embedded,omitempty"`
-	Next       string                 `json:"next,omitempty"`
-	Total      int                    `json:"total,omitempty"`
+	Error      string      `json:"error,omitempty"`
+	StatusCode int         `json:"status_code"`
+	Message    string      `json:"message"`
+	Embedded   interface{} `json:"embedded,omitempty"`
+	Next       string      `json:"next,omitempty"`
+	Total      int         `json:"total,omitempty"`
 }
 
 type ResponseParams struct {
 	StatusCode int
 	Message    string
 	Error      string
-	Embedded   map[string]interface{}
+	Embedded   interface{}
 	Next       string
 	Total      int
 }

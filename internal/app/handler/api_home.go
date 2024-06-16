@@ -1,19 +1,18 @@
 package handler
 
 import (
-	"compras/pkg/response"
 	"net/http"
+
+	"github.com/wellingtonreis/compras/pkg/response"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	params := response.ResponseParams{
 		StatusCode: 200,
 		Message:    "Operação realizada com sucesso.",
-		Embedded: map[string]interface{}{
-			"user": map[string]string{"name": "John Doe", "role": "admin"},
-		},
-		Next:  "http://api.example.com/users?page=2",
-		Total: 150,
+		Embedded:   "",
+		Next:       "http://api.example.com/users?page=2",
+		Total:      0,
 	}
 
 	jsonResponse := response.CreateJSONResponse(params)

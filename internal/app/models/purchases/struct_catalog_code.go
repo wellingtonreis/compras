@@ -6,7 +6,7 @@ type CatalogCode struct {
 	Catmat            string         `json:"catmat"`
 	Apresentacao      string         `json:"apresentacao"`
 	Quantidade        string         `json:"quantidade"`
-	Cotacao           string         `json:"cotacao"`
+	Cotacao           int64          `json:"cotacao"`
 	Hu                string         `json:"hu"`
 	Categoria         string         `json:"categoria"`
 	Subcategoria      string         `json:"subcategoria"`

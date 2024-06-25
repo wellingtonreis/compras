@@ -24,3 +24,4 @@ web/app/.quasar
 web/app/node_modules
 web/app/package-lock.json
 __debug_bin*
+*.env

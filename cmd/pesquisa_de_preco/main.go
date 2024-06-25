@@ -4,14 +4,24 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/wellingtonreis/compras/internal/app/middleware"
+
+	"github.com/wellingtonreis/compras/configs"
+
 	"github.com/wellingtonreis/compras/internal/app/handler"
 )
 
 func main() {
 	router := handler.SetupRoutes()
+	corsHandler := middleware.EnableCors(router)
 
-	log.Println("Server starting on port 3000...")
-	if err := http.ListenAndServe(":3000", router); err != nil {
+	configs, err := configs.LoadConfig()
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println("Servidor iniciado na porta 3000...")
+	if err := http.ListenAndServe(":"+configs.WebServerPort, corsHandler); err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
 }

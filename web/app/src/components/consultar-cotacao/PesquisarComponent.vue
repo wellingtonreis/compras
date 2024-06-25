@@ -266,9 +266,9 @@
 <script setup>
 import { ref, toRaw } from "vue";
 import { storeToRefs } from "pinia";
-import { usePesquisarStore } from "stores/consultar-cotacao/usePesquisarStore.js";
+import { useConsultarCotacaoStore } from "stores/consultar-cotacao/useConsultarCotacaoStore.js";
 
-const pesquisarStore = usePesquisarStore();
+const consultarCotacaoStore = useConsultarCotacaoStore();
 const text = ref(null);
 const {
   filtro,
@@ -277,7 +277,7 @@ const {
   opcoesCategorias,
   opcoesSubCategorias,
   opcoesSituacao,
-} = storeToRefs(pesquisarStore);
+} = storeToRefs(consultarCotacaoStore);
 
 const categoriaFiltro = toRaw(opcoesCategorias.value);
 const filtraCategoria = (val, update) => {

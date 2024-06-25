@@ -12,7 +12,7 @@
 const { configure } = require('quasar/wrappers');
 const path = require('path');
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -46,6 +46,15 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
+      env: ctx.dev ? {
+        URL_API_DEV: 'http://localhost:3000',
+        ENVIRONMENT: 'development',
+      }
+      : {
+        URL_API_PROD: 'https://',
+        ENVIRONMENT: 'production',
+      },
+
       chainWebpack(chain) {
         chain.resolve.alias.set('@', ctx.appDir)
       },
@@ -71,8 +80,13 @@ module.exports = configure(function (/* ctx */) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
+      extendViteConf (viteConf) {
+        viteConf.resolve.alias = {
+          ...viteConf.resolve.alias,
+          '@': path.resolve(__dirname, './src')
+        }
+      },
 
       vitePlugins: [
         ['@intlify/vite-plugin-vue-i18n', {

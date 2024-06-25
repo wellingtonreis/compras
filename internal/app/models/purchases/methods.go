@@ -12,8 +12,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var schema = mongodb.GetMongoSchema()
+
 func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
-	collection := db.Client.Database("admin").Collection("purchases")
+	collection := db.Client.Database(schema).Collection("purchases")
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
@@ -122,14 +124,14 @@ func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
 }
 
 func SearchQuotationHistory(db *mongodb.MongoDB, catalogCode *CatalogCode) ([]QuotationHistory, error) {
-	collection := db.Client.Database("admin").Collection("purchases")
+	collection := db.Client.Database(schema).Collection("purchases")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	pipeline := mongo.Pipeline{}
 
-	if catalogCode.Cotacao != "" {
+	if catalogCode.Cotacao > 0 {
 		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"cotacao", catalogCode.Cotacao}}}})
 	}
 
@@ -158,11 +160,5 @@ func SearchQuotationHistory(db *mongodb.MongoDB, catalogCode *CatalogCode) ([]Qu
 		return nil, fmt.Errorf("erro ao tentar ler todos os documentos: %v", err)
 	}
 
-	var results []QuotationHistory
-
-	for _, doc := range docs {
-		results = append(results, doc)
-	}
-
-	return results, nil
+	return docs, nil
 }

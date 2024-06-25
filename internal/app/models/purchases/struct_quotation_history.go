@@ -3,7 +3,7 @@ package models
 import "time"
 
 type QuotationHistory struct {
-	Cotacao      string    `json:"cotacao"`
+	Cotacao      int64     `json:"cotacao"`
 	Hu           string    `json:"hu"`
 	Categoria    string    `json:"categoria"`
 	Subcategoria string    `json:"subcategoria"`

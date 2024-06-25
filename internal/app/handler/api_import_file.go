@@ -18,8 +18,6 @@ import (
 	"github.com/wellingtonreis/compras/internal/app/platform/database/mongodb"
 	"github.com/wellingtonreis/compras/pkg/importer"
 	"github.com/wellingtonreis/compras/pkg/response"
-
-	"github.com/google/uuid"
 )
 
 func receiveAttachment(r *http.Request) (multipart.File, string, error) {
@@ -94,7 +92,19 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 
 	today := time.Date(year, month, day, hour, minute, second, 0, time.FixedZone("", -3*60*60))
 
-	uuid := uuid.New().String()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	db, err := mongodb.NewConnectionMongoDB(ctx)
+	if err != nil {
+		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
+	}
+	defer db.Close()
+
+	sequence, err := db.GetNextSequenceValue("catalogcode")
+	if err != nil {
+		log.Fatal("Erro ao tentar cadastrar a sequencia de identificação:", err)
+	}
+
 	for i, record := range data {
 		if i == 0 {
 			continue
@@ -110,7 +120,7 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 			Catmat:       record[0],
 			Apresentacao: record[1],
 			Quantidade:   record[2],
-			Cotacao:      uuid,
+			Cotacao:      sequence,
 			Hu:           "",
 			Categoria:    "",
 			Subcategoria: "",
@@ -130,7 +140,7 @@ func saveData(data models.Data) {
 	defer cancel()
 	db, err := mongodb.NewConnectionMongoDB(ctx)
 	if err != nil {
-		log.Fatal("Error connecting to MongoDB:", err)
+		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
 	}
 	defer db.Close()
 
@@ -139,7 +149,7 @@ func saveData(data models.Data) {
 		items = append(items, item)
 	}
 
-	err = db.InsertData("admin", "purchases", items)
+	err = db.InsertData("purchases", items)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -150,12 +160,12 @@ func findLatest() *[]models.CatalogCode {
 	defer cancel()
 	db, err := mongodb.NewConnectionMongoDB(ctx)
 	if err != nil {
-		log.Fatal("Error connecting to MongoDB:", err)
+		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
 	}
 	defer db.Close()
 	catalogData, err := models.SavePurchaseItemDocuments(db)
 	if err != nil {
-		log.Fatalf("Failed to filter documents: %v", err)
+		log.Fatalf("Erro ao tentar cadastrar os documentos: %v", err)
 	}
 	return &catalogData
 }

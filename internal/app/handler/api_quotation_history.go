@@ -30,12 +30,12 @@ func ListQuotationHistoryHandler(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 	db, err := mongodb.NewConnectionMongoDB(ctx)
 	if err != nil {
-		log.Fatal("Error connecting to MongoDB:", err)
+		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
 	}
 	defer db.Close()
 	result, err := models.SearchQuotationHistory(db, &catalogCode)
 	if err != nil {
-		log.Fatalf("Failed to filter documents: %v", err)
+		log.Fatalf("Erro ao tentar buscar os documentos: %v", err)
 	}
 
 	responseParams := response.ResponseParams{

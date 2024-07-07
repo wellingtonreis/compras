@@ -3,7 +3,7 @@ module github.com/wellingtonreis/compras
 go 1.22.1
 
 require (
-	github.com/gorilla/mux v1.8.1
+	github.com/go-chi/chi/v5 v5.1.0
 	github.com/rs/cors v1.11.0
 	github.com/spf13/viper v1.19.0
 	github.com/tealeg/xlsx v1.0.5

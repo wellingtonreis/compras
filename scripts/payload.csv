@@ -1,0 +1,445 @@
+"id_subcategoria"|"titulo_subcategoria"|"chave_estrangeira_id_categoria"|"id_categoria"|"titulo_categoria"
+1|Fornecimento de água mineral|1|1|Água
+2|Fornecimento de água por carro pipa|1|1|Água
+3|Fornecimento/tratamento água e esgoto|1|1|Água
+4|Locação de imóvel|2|2|Locação de imóvel
+5|Aquisição de veículos em geral|3|3|Transporte não assistencial
+6|Peças manutenção veículos|3|3|Transporte não assistencial
+7|Seguros em geral|4|4|Seguros
+8|Serviços de veículos em geral|5|5|Veículos em geral
+9|Vigilância|6|6|Vigilância
+10|Acondicionamento e embalagens não assistenciais|7|7|Material de expediente
+11|Material de expediente|7|7|Material de expediente
+12|Material impresso de suporte direto à assistência|7|7|Material de expediente
+13|Avaliações de Ativo|8|8|Gestão de ativos
+14|Armazenamento de Bens|8|8|Gestão de ativos
+15|Materiais para Gestão de Ativo|8|8|Gestão de ativos
+16|Linha Branca|9|9|Eletrodomésticos
+17|Linha Marrom|9|9|Eletrodomésticos
+18|Outros eletrodomésticos|9|9|Eletrodomésticos
+19|Máquinas e Equipamentos|10|10|Máquinas Utensílios e Equipamentos Comuns
+20|Materiais e Utensílios Comuns|10|10|Máquinas Utensílios e Equipamentos Comuns
+21|Equipamentos Grande Porte|11|11|Máquinas e equipamentos de logística
+22|Movimentação de Material|11|11|Máquinas e equipamentos de logística
+23|Materiais e Utensílios de Apoio|11|11|Máquinas e equipamentos de logística
+24|Apoio|12|12|Mobiliário (uso não assistencial)
+25|Escritório|12|12|Mobiliário (uso não assistencial)
+26|Modulares|12|12|Mobiliário (uso não assistencial)
+27|Móveis Diversos|12|12|Mobiliário (uso não assistencial)
+28|Comunicação|13|13|Segurança patrimonial
+29|Monitoramento (equipamentos)|13|13|Segurança patrimonial
+30|Monitoramento (serviço)|13|13|Segurança patrimonial
+31|Controle de Acesso|13|13|Segurança patrimonial
+32|Acessórios e Suportes Equipamentos Segurança Patrimonial|13|13|Segurança patrimonial
+33|Bens móveis não ativáveis|14|14|Utensílios comuns
+34|EMH para agência transfusional|15|15|Equipamentos médico-hospitalares
+35|EMH para ambulatório e enfermaria|15|15|Equipamentos médico-hospitalares
+36|EMH para cirurgia|15|15|Equipamentos médico-hospitalares
+37|EMH para cme|15|15|Equipamentos médico-hospitalares
+38|EMH para diagnóstico por imagem|15|15|Equipamentos médico-hospitalares
+39|EMH para endoscopia|15|15|Equipamentos médico-hospitalares
+40|EMH para farmácia|15|15|Equipamentos médico-hospitalares
+41|EMH para fisioterapia|15|15|Equipamentos médico-hospitalares
+42|EMH para hemodiálise|15|15|Equipamentos médico-hospitalares
+43|EMH para laboratório|15|15|Equipamentos médico-hospitalares
+44|EMH para materno infantil|15|15|Equipamentos médico-hospitalares
+45|EMH para métodos gráficos|15|15|Equipamentos médico-hospitalares
+46|EMH para oftalmologia|15|15|Equipamentos médico-hospitalares
+47|EMH para oncologia|15|15|Equipamentos médico-hospitalares
+48|EMH para uti e suporte a vida|15|15|Equipamentos médico-hospitalares
+49|Hélio líquido para ressonância magnética|15|15|Equipamentos médico-hospitalares
+50|Instrumentos para engenharia clínica|15|15|Equipamentos médico-hospitalares
+51|Insumos e acessórios para EMH|15|15|Equipamentos médico-hospitalares
+52|Locação de EMH|15|15|Equipamentos médico-hospitalares
+53|Locação de EMH com fornecimento de materiais|15|15|Equipamentos médico-hospitalares
+54|Manutenção para EMH de alta complexidade|15|15|Equipamentos médico-hospitalares
+55|Manutenção para EMH de média e baixa complexidade|15|15|Equipamentos médico-hospitalares
+56|Peças para EMH|15|15|Equipamentos médico-hospitalares
+57|Qualificação de EMH|15|15|Equipamentos médico-hospitalares
+58|Carros funcionais|16|16|Higienização e desinfecção de superfícies
+59|Dispensadores (sabonete, álcool gel ou espuma, papel toalha, papel higiênico)|16|16|Higienização e desinfecção de superfícies
+60|Equipamentos de validação e qualificação para limpeza e desinfecção de superfícies|16|16|Higienização e desinfecção de superfícies
+61|Equipamentos industriais para diluição de saneantes, higienização e desinfecção de superfícies|16|16|Higienização e desinfecção de superfícies
+62|Higienização e desinfecção de superfícies|16|16|Higienização e desinfecção de superfícies
+63|Insumos e utensílios de higienização e desinfecção de superfícies|16|16|Higienização e desinfecção de superfícies
+64|Insumos e utensílios para validação e qualificação para limpeza e desinfecção de superfícies|16|16|Higienização e desinfecção de superfícies
+65|Itens de higiene pessoal|16|16|Higienização e desinfecção de superfícies
+66|Locação de dispensadores para sabonete líquido e/ou álcool gel ou espuma|16|16|Higienização e desinfecção de superfícies
+67|Produtos químicos para limpeza e desinfecção de superfícies|16|16|Higienização e desinfecção de superfícies
+68|Balanças plataforma industriais|17|17|Meio ambiente, conforto e hospitalidade
+69|Beliches e poltronas reclináveis para descanso funcional|17|17|Meio ambiente, conforto e hospitalidade
+70|Colchões e travesseiros|17|17|Meio ambiente, conforto e hospitalidade
+71|Coleta, transporte e destinação final de resíduos especiais|17|17|Meio ambiente, conforto e hospitalidade
+72|Coleta, transporte, tratamento e disposição/destinação final de resíduos sólidos hospitalares|17|17|Meio ambiente, conforto e hospitalidade
+73|Controle e manejo de pragas e vetores|17|17|Meio ambiente, conforto e hospitalidade
+74|Lixeiras, carros de transporte e contêineres para resíduos - bens permanentes|17|17|Meio ambiente, conforto e hospitalidade
+75|Lixeiras, outros recipientes para resíduos e seus acessórios - itens de consumo ou de consumo reutilizáveis|17|17|Meio ambiente, conforto e hospitalidade
+76|Camareiros|18|18|Processamento de roupas e gestão do enxoval
+77|Enxoval hospitalar|18|18|Processamento de roupas e gestão do enxoval
+78|Equipamentos de lavanderia|18|18|Processamento de roupas e gestão do enxoval
+79|Equipamentos de rouparia e costuraria|18|18|Processamento de roupas e gestão do enxoval
+80|Insumos e utensílios de lavanderia e rouparia|18|18|Processamento de roupas e gestão do enxoval
+81|Processamento de roupas (com ou sem locação do enxoval; externa ou interna)|18|18|Processamento de roupas e gestão do enxoval
+82|Processamento de roupas (com ou sem locação do enxoval; externa ou interna) e gestão do enxoval|18|18|Processamento de roupas e gestão do enxoval
+83|Produtos químicos para lavanderia hospitalar|18|18|Processamento de roupas e gestão do enxoval
+84|Rouparia (com ou sem logística de recolhimento do enxoval sujo)|18|18|Processamento de roupas e gestão do enxoval
+85|Tecidos e aviamentos|18|18|Processamento de roupas e gestão do enxoval
+86|Copeiragem|19|19|Produção e distribuição de refeições orais e enterais
+87|Equipamentos industriais para produção de refeições (fixos ou não)|19|19|Produção e distribuição de refeições orais e enterais
+88|Equipamentos para distribuição de refeições|19|19|Produção e distribuição de refeições orais e enterais
+89|Gêneros alimentícios|19|19|Produção e distribuição de refeições orais e enterais
+90|Insumos de fórmulas lácteas, enterais, módulos e suplementos nutricionais|19|19|Produção e distribuição de refeições orais e enterais
+91|Insumos e utensílios de copa e cozinha|19|19|Produção e distribuição de refeições orais e enterais
+92|Mobiliário para refeitório|19|19|Produção e distribuição de refeições orais e enterais
+93|Produção de refeições orais, fórmulas lácteas, enterais, módulos e suplementos nutricionais|19|19|Produção e distribuição de refeições orais e enterais
+94|"Produção e distribuição de refeições orais, fórmulas lácteas, enterais, módulos e suplementos nutricionais (preparada ou transportada; com ou sem ""cook chill"")"|19|19|Produção e distribuição de refeições orais e enterais
+95|Refeições prontas|19|19|Produção e distribuição de refeições orais e enterais
+96|Energia elétrica|20|20|Energia
+97|Grupo geradores|20|20|Energia
+98|Águas pluviais|21|21|Equipamentos de infraestrutura física
+99|Arquitetura/civil|21|21|Equipamentos de infraestrutura física
+100|Elétrica|21|21|Equipamentos de infraestrutura física
+101|Eletrônica|21|21|Equipamentos de infraestrutura física
+102|Esgoto sanitário|21|21|Equipamentos de infraestrutura física
+103|Estrutura|21|21|Equipamentos de infraestrutura física
+104|Hidráulico de saúde|21|21|Equipamentos de infraestrutura física
+105|Hidráulico geral|21|21|Equipamentos de infraestrutura física
+106|Lógica|21|21|Equipamentos de infraestrutura física
+107|Mecânica|21|21|Equipamentos de infraestrutura física
+108|Oficinas|21|21|Equipamentos de infraestrutura física
+109|Engenharia de custos|22|22|Estudos e projetos de infraestrutura física
+110|Estudos especializados|22|22|Estudos e projetos de infraestrutura física
+111|Projetos de arquitetura e urbanismo|22|22|Estudos e projetos de infraestrutura física
+112|Projetos de engenharia urbana|22|22|Estudos e projetos de infraestrutura física
+113|Projetos de engenharia: hidrossanitária, elétrica, lógica e estrutural|22|22|Estudos e projetos de infraestrutura física
+114|Projetos de instalações mecânicas|22|22|Estudos e projetos de infraestrutura física
+115|Projetos de mobiliário e ergonomia|22|22|Estudos e projetos de infraestrutura física
+116|Projetos de tratamento acústico|22|22|Estudos e projetos de infraestrutura física
+117|Segurança do trabalho|22|22|Estudos e projetos de infraestrutura física
+118|GLP|23|23|Gases (não medicinais)
+119|Outros Gases|23|23|Gases (não medicinais)
+120|Centrais de gases medicinais|24|24|Manutenção predial
+121|Elevadores e equipamentos de transporte vertical|24|24|Manutenção predial
+122|Instalações de combate a incêndio|24|24|Manutenção predial
+123|Instalações prediais e civis|24|24|Manutenção predial
+124|Jardins e áreas verdes|24|24|Manutenção predial
+125|Limpeza de fachada|24|24|Manutenção predial
+126|Manutenção de mobiliário|24|24|Manutenção predial
+127|Manutenção predial (Agrupado)|24|24|Manutenção predial
+128|Pavimentação|24|24|Manutenção predial
+129|Saneamento|24|24|Manutenção predial
+130|Serralheria e marcenaria|24|24|Manutenção predial
+131|Sinalização hospitalar|24|24|Manutenção predial
+132|Sistemas de água quente e vapor|24|24|Manutenção predial
+133|Sistemas de climatização, ventilação, exaustão e ar-condicionado|24|24|Manutenção predial
+134|Sistemas de tratamento de água e esgoto|24|24|Manutenção predial
+135|Sistemas de vigilância e comunicação |24|24|Manutenção predial
+136|Sistemas elétricos|24|24|Manutenção predial
+137|Sistemas hidráulicos e de gás combustível|24|24|Manutenção predial
+138|Materiais e insumos de eletrônica|25|25|Materiais e insumos de infraestrutura física
+139|Materiais e insumos de hidráulica para equipamentos e processos de saúde|25|25|Materiais e insumos de infraestrutura física
+140|Materiais e insumos de mecânica|25|25|Materiais e insumos de infraestrutura física
+141|Materiais e insumos de oficinas|25|25|Materiais e insumos de infraestrutura física
+142|Materiais e insumos de rede lógica e TIC|25|25|Materiais e insumos de infraestrutura física
+143|Materiais e insumos hidrossanitários, elétricos e civis|25|25|Materiais e insumos de infraestrutura física
+144|Obras|26|26|Obras
+145|Restauro de patrimônio histórico|26|26|Obras
+146|Serviço de esterilização|27|27|Contratação de serviços de manutenção de material médico hospitalar
+147|Serviço de manutenção de instrumental cirúrgico|27|27|Contratação de serviços de manutenção de material médico hospitalar
+148|Análises citogenômicas|28|28|Serviço de apoio diagnóstico
+149|Diagnósticos por métodos gráficos|28|28|Serviço de apoio diagnóstico
+150|Laboratório de análises clínicas|28|28|Serviço de apoio diagnóstico
+151|Medicina fetal|28|28|Serviço de apoio diagnóstico
+152|Serviço de exames de imagem|28|28|Serviço de apoio diagnóstico
+153|Serviço de hemodinâmica/radiologia intervencionista|28|28|Serviço de apoio diagnóstico
+154|Serviço de medicina nuclear|28|28|Serviço de apoio diagnóstico
+155|Serviço de radioterapia|28|28|Serviço de apoio diagnóstico
+156|Serviço de endoscopia|29|29|Serviço de apoio diagnóstico e terapêutico
+157|Serviço de fonoaudiologia|29|29|Serviço de apoio diagnóstico e terapêutico
+158|Criopreservação de célula|30|30|Serviço de apoio terapêutico
+159|Hemoterapia (transfusão)|30|30|Serviço de apoio terapêutico
+160|Laboratório de prótese dentária|30|30|Serviço de apoio terapêutico
+161|Medicina hiperbárica|30|30|Serviço de apoio terapêutico
+162|Serviço de circulação extracorpórea/perfusão cardíaca|30|30|Serviço de apoio terapêutico
+163|Terapia renal substitutiva (hemodiálise)|30|30|Serviço de apoio terapêutico
+164|Aparelhos médicos|31|31|Contratação de permanente médico-hospitalar
+165|Avaliação física|31|31|Contratação de permanente médico-hospitalar
+166|Cardiologia|31|31|Contratação de permanente médico-hospitalar
+167|Centro cirúrgico|31|31|Contratação de permanente médico-hospitalar
+168|Centro obstétrico|31|31|Contratação de permanente médico-hospitalar
+169|CME|31|31|Contratação de permanente médico-hospitalar
+170|Diagnóstico por imagem|31|31|Contratação de permanente médico-hospitalar
+171|Enfermaria/ internação|31|31|Contratação de permanente médico-hospitalar
+172|Fisioterapia|31|31|Contratação de permanente médico-hospitalar
+173|Fonoaudiologia|31|31|Contratação de permanente médico-hospitalar
+174|Imobilização|31|31|Contratação de permanente médico-hospitalar
+175|Instrumentação cirúrgica|31|31|Contratação de permanente médico-hospitalar
+176|Laboratório|31|31|Contratação de permanente médico-hospitalar
+177|Material para fisioterapia|31|31|Contratação de permanente médico-hospitalar
+178|Material respiratório|31|31|Contratação de permanente médico-hospitalar
+179|Mobiliário hospitalar|31|31|Contratação de permanente médico-hospitalar
+180|Pediatria|31|31|Contratação de permanente médico-hospitalar
+181|Transporte de paciente|31|31|Contratação de permanente médico-hospitalar
+182|Gases medicinais|32|32|Gases medicinais
+183|Instrumentais assistenciais|33|33|Instrumental
+184|Instrumentais cirúrgicos|33|33|Instrumental
+185|Instrumentais para videocirurgia|33|33|Instrumental
+186|Anatomia patológica|34|34|Laboratório
+187|Biologia molecular|34|34|Laboratório
+188|Bioquímica|34|34|Laboratório
+189|Hematologia e imunohematologia|34|34|Laboratório
+190|Imunologia|34|34|Laboratório
+191|Insumos laboratoriais|34|34|Laboratório
+192|Insumos para coleta|34|34|Laboratório
+193|Microbiologia|34|34|Laboratório
+194|Vidrarias e utensílios gerais|34|34|Laboratório
+195|Anestésicos e adjuvantes|35|35|Medicamentos
+196|"Ansiolíticos, sedativos, anticonvulsivantes, antidepressivos e 
+antipsicóticos"|35|35|Medicamentos
+197|Anti-Inflamatórios, analgésicos, antitérmicos|35|35|Medicamentos
+198|Antimicrobianos|35|35|Medicamentos
+199|Antineoplásicos e citostáticos|35|35|Medicamentos
+200|Aparelho cardiovascular|35|35|Medicamentos
+201|Aparelho digestório, metabolismo, vitaminas e suplementos|35|35|Medicamentos
+202|Aparelho respiratório|35|35|Medicamentos
+203|Contrastes|35|35|Medicamentos
+204|Correlatos|35|35|Medicamentos
+205|Dermatológicos|35|35|Medicamentos
+206|Hormônios e análogos|35|35|Medicamentos
+207|Imunoterapia e alergia|35|35|Medicamentos
+208|Insumos para manipulação farmacêutica|35|35|Medicamentos
+209|Medicamentos diversos e de uso geral|35|35|Medicamentos
+210|Medicamentos manipulados|35|35|Medicamentos
+211|Nutrição parenteral|35|35|Medicamentos
+212|Odontológicos|35|35|Medicamentos
+213|Oftálmicos|35|35|Medicamentos
+214|Radiofármacos|35|35|Medicamentos
+215|Sangue e órgãos hematopoiéticos|35|35|Medicamentos
+216|Solução de grande e pequeno volume|35|35|Medicamentos
+217|Auxiliares de locomoção|36|36|Órtese, prótese e materiais especiais - OPME
+218|Bucomaxilofacial|36|36|Órtese, prótese e materiais especiais - OPME
+219|Cirurgia cardiovascular|36|36|Órtese, prótese e materiais especiais - OPME
+220|Cirurgia plástica|36|36|Órtese, prótese e materiais especiais - OPME
+221|Coloproctologia|36|36|Órtese, prótese e materiais especiais - OPME
+222|Gastroenterologia|36|36|Órtese, prótese e materiais especiais - OPME
+223|Nefrologia|36|36|Órtese, prótese e materiais especiais - OPME
+224|Neurologia|36|36|Órtese, prótese e materiais especiais - OPME
+225|Odontologia|36|36|Órtese, prótese e materiais especiais - OPME
+226|Oftalmologia|36|36|Órtese, prótese e materiais especiais - OPME
+227|OPME comuns|36|36|Órtese, prótese e materiais especiais - OPME
+228|Ortopedia|36|36|Órtese, prótese e materiais especiais - OPME
+229|Otorrinolaringologia/implante coclear|36|36|Órtese, prótese e materiais especiais - OPME
+230|Queimados|36|36|Órtese, prótese e materiais especiais - OPME
+231|Transplante|36|36|Órtese, prótese e materiais especiais - OPME
+232|Urologia|36|36|Órtese, prótese e materiais especiais - OPME
+233|Acondicionamento e embalagens farmacêuticas|37|37|Produtos para saúde
+234|Agulhas, seringas e cateteres (Equipos e Extensores)|37|37|Produtos para saúde
+235|Cânulas, drenos, tubos e sondas|37|37|Produtos para saúde
+236|Colchão caixa de ovo|37|37|Produtos para saúde
+237|Coxins|37|37|Produtos para saúde
+238|Curativos e estomias|37|37|Produtos para saúde
+239|Equipos de bomba de infusão|37|37|Produtos para saúde
+240|Fios cirúrgicos, clipes e hemostáticos|37|37|Produtos para saúde
+241|Grampeador cirúrgico|37|37|Produtos para saúde
+242|Insumos para cardiologia|37|37|Produtos para saúde
+243|Insumos para diagnóstico por imagem|37|37|Produtos para saúde
+244|Insumos para hemodiálise|37|37|Produtos para saúde
+245|Insumos para hemodinâmica|37|37|Produtos para saúde
+246|Insumos para odontologia|37|37|Produtos para saúde
+247|Insumos para oftalmologia|37|37|Produtos para saúde
+248|Insumos para processamento de produtos para saúde (CME)|37|37|Produtos para saúde
+249|Insumos para psicologia|37|37|Produtos para saúde
+250|Insumos para radioterapia|37|37|Produtos para saúde
+251|Insumos para reabilitação|37|37|Produtos para saúde
+252|Insumos para unitarizadora|37|37|Produtos para saúde
+253|Material respiratório|37|37|Produtos para saúde
+254|MMH|37|37|Produtos para saúde
+255|Paramentação cirúrgica|37|37|Produtos para saúde
+256|Pneumáticos|37|37|Produtos para saúde
+257|Saneantes|37|37|Produtos para saúde
+258|Serviço de manipulação de fármacos|38|38|Serviço de manipulação de fármacos
+259|Leite humano ordenhado, fórmulas infantis reconstituídas e água para preparo de mamadeiras e similares|39|39|Controle de qualidade do leite humano
+260|Laboratórios que realizam atividades nas áreas de análise clínicas e patologia clínica|40|40|Serviço de controle externo de qualidade ou ensaio/teste de proficiência laboratorial
+261|Arquivamento, guarda (interna e externa), armazenamento e desarquivamento de prontuários|41|41|Gestão de documentação clínica
+262|Avaliação, controle e organização de prontuários|41|41|Gestão de documentação clínica
+263|Descarte de prontuários|41|41|Gestão de documentação clínica
+264|Digitalização de prontuários|41|41|Gestão de documentação clínica
+265|Aquisição de tecnologias voltados ao ensino|42|42|Ensino
+266|Assinatura de ISBN, ABNT|42|42|Ensino
+267|Assinaturas de revistas/periódicos científicos|42|42|Ensino
+268|Bolsas de ensino|42|42|Ensino
+269|Capacitação didático/pedagógica (preceptores)|42|42|Ensino
+270|Cursos/instrutoria voltados aos estudantes|42|42|Ensino
+271|Livros (coleções e materiais bibliográficos)|42|42|Ensino
+272|Material de ensino e pesquisa|42|42|Ensino
+273|Material educativo e esportivo|42|42|Ensino
+274|Material lúdico|42|42|Ensino
+275|Material multidisciplinar e para oficina terapêutica|42|42|Ensino
+276|Planejamento de ensino|42|42|Ensino
+277|Simuladores (computacionais, robóticos/manequins)|42|42|Ensino
+278|Treinamento/manutenção de tecnologias voltadas ao ensino|42|42|Ensino
+279|Encomenda tecnológica|43|43|Pesquisa
+280|Equipamentos para pesquisa|43|43|Pesquisa
+281|Kits diagnósticos para pesquisa|43|43|Pesquisa
+282|Publicação de artigos científicos|43|43|Pesquisa
+283|Registro de propriedade intelectual|43|43|Pesquisa
+284|Tradução de textos científicos|43|43|Pesquisa
+285|Responsabilidade técnica|44|44|Conselhos obrigatórios institucionais
+286|Relógio de ponto|45|45|Relógio de ponto
+287|EPIs descartáveis|46|46|EPIs
+288|EPIs não descartáveis|46|46|EPIs
+289|EPIs radiológicos|46|46|EPIs
+290|Jalecos|46|46|EPIs
+291|Kit de proteção respiratória autônomo|47|47|Equipamento de emergência
+292|Resgate e salvamento|47|47|Equipamento de emergência
+293|Ergonomia|48|48|Equipamento de segurança
+294|Proteção contra quedas|48|48|Equipamento de segurança
+295|Proteção contra radiação|48|48|Equipamento de segurança
+296|Acessórios|49|49|Equipamento de sistema de proteção contra incêndio
+297|Equipamento e produtos de combate a incêndio|49|49|Equipamento de sistema de proteção contra incêndio
+298|Ferramenta de segurança|49|49|Equipamento de sistema de proteção contra incêndio
+299|Sinalização de segurança|49|49|Equipamento de sistema de proteção contra incêndio
+300|Contratação de dosimetria|50|50|Física médica
+301|Controle de qualidade (radiometria)|50|50|Física médica
+302|Instrumentos de medição radiológica|50|50|Física médica
+303|Acessórios|51|51|Higiene ocupacional
+304|Análises químicas|51|51|Higiene ocupacional
+305|Avaliação atmosférica|51|51|Higiene ocupacional
+306|Certificação|51|51|Higiene ocupacional
+307|Espaço confinado - acessórios|51|51|Higiene ocupacional
+308|Medidor de dosimetria de ruído|51|51|Higiene ocupacional
+309|Medidor de dosimetria de ruído - acessórios|51|51|Higiene ocupacional
+310|Medidor de luminância|51|51|Higiene ocupacional
+311|Medidor de pressão sonora|51|51|Higiene ocupacional
+312|Medidor de pressão sonora - acessórios|51|51|Higiene ocupacional
+313|Medidor de stress térmico|51|51|Higiene ocupacional
+314|Medidor de temperatura ambiente|51|51|Higiene ocupacional
+315|Medidor de temperatura e velocidade do ar|51|51|Higiene ocupacional
+316|Medidor de umidade/temperatura|51|51|Higiene ocupacional
+317|Proteção respiratória|51|51|Higiene ocupacional
+318|Serviços Técnicos Especializados|51|51|Higiene ocupacional
+319|Estagiários|52|52|Concursos e seleções
+320|Provimento de pessoal efetivo|52|52|Concursos e seleções
+321|Programa de desenho assistido|53|53|Programas de computador
+322|Programa de edição visual|53|53|Programas de computador
+323|Programa de desenvolvimento de sistemas|53|53|Programas de computador
+324|Suporte de programas|53|53|Programas de computador
+325|Programa de gerenciamento de desempenho de software|53|53|Programas de computador
+326|Programa de análise de dados|53|53|Programas de computador
+327|Programa de gestão de projetos|53|53|Programas de computador
+328|Programa de estatística|53|53|Programas de computador
+329|Sistema de administração|54|54|Sistemas de informação
+330|Sistema de administração de pessoal|54|54|Sistemas de informação
+331|Sistema de auditoria|54|54|Sistemas de informação
+332|Sistema de comunicação social|54|54|Sistemas de informação
+333|Sistema de contabilidade|54|54|Sistemas de informação
+334|Sistema de corregedoria|54|54|Sistemas de informação
+335|Sistema de desenvolvimento de pessoal|54|54|Sistemas de informação
+336|Sistema de gestão clínica|54|54|Sistemas de informação
+337|Sistema de gestão de ensino|54|54|Sistemas de informação
+338|Sistema de gestão de estoque/patrimônio|54|54|Sistemas de informação
+339|Sistema de gestão de pesquisa e inovação tecnológica em saúde|54|54|Sistemas de informação
+340|Sistema de gestão de processos|54|54|Sistemas de informação
+341|Sistema de gestão de riscos|54|54|Sistemas de informação
+342|Sistema de hotelaria hospitalar|54|54|Sistemas de informação
+343|Sistema de infraestrutura hospitalar|54|54|Sistemas de informação
+344|Sistema de orçamento|54|54|Sistemas de informação
+345|Sistema de planejamento de pessoal|54|54|Sistemas de informação
+346|Sistema de suporte ao desenvolvimento de sistemas|54|54|Sistemas de informação
+347|Sistema jurídico|54|54|Sistemas de informação
+348|Serviço de desenvolvimento e sustentação de sistemas|55|55|Desenvolvimento e sustentação de sistemas de informação
+349|Componentes para servidores |56|56|Armazenamento, processamento e backup
+350|Infraestrutura como serviço (IaaS)|56|56|Armazenamento, processamento e backup
+351|Serviço de sustentação (manutenção, suporte e garantia) de solução de armazenamento e/ou backup|56|56|Armazenamento, processamento e backup
+352|Servidores de processamento|56|56|Armazenamento, processamento e backup
+353|Soluções de armazenamento|56|56|Armazenamento, processamento e backup
+354|Soluções de backup|56|56|Armazenamento, processamento e backup
+355|Suprimentos de armazenamento e backup|56|56|Armazenamento, processamento e backup
+356|Balanceador de carga|57|57|Conectividade
+357|Componentes|57|57|Conectividade
+358|Links de conectividade|57|57|Conectividade
+359|Serviço de sustentação (manutenção e suporte) de solução de conectividade|57|57|Conectividade
+360|Solução de rede cabeada|57|57|Conectividade
+361|Solução de rede sem fio|57|57|Conectividade
+362|Cabo (UTP), conector (RJ45)|58|58|Infraestrutura de TI
+363|Distribuidor óptico (DIO)|58|58|Infraestrutura de TI
+364|Infraestrutura como serviço (IaaS)|58|58|Infraestrutura de TI
+365|Organizador de cabo|58|58|Infraestrutura de TI
+366|Patch panel|58|58|Infraestrutura de TI
+367|Racks|58|58|Infraestrutura de TI
+368|Serviço de sustentação (manutenção, suporte e garantia) de infraestrutura de TI|58|58|Infraestrutura de TI
+369|Solução de datacenter|58|58|Infraestrutura de TI
+370|Switch KVM|58|58|Infraestrutura de TI
+371|Serviço de sustentação de solução de segurança de TI|59|59|Segurança de TI
+372|Solução de análise de vulnerabilidade|59|59|Segurança de TI
+373|Solução de antivírus|59|59|Segurança de TI
+374|Solução de certificado digital para PF e PJ|59|59|Segurança de TI
+375|Solução de certificado digital SSL para servidores|59|59|Segurança de TI
+376|Solução de correlacionador de logs de eventos|59|59|Segurança de TI
+377|Solução de firewall|59|59|Segurança de TI
+378|Componentes|60|60|Acessórios para computadores
+379|Kit de ferramentas de TIC|60|60|Acessórios para computadores
+380|Periféricos|60|60|Acessórios para computadores
+381|Computadores de placa única|61|61|Computadores e monitores
+382|Computadores e dispositivos para ensino e pesquisa|61|61|Computadores e monitores
+383|Estação de trabalho|61|61|Computadores e monitores
+384|Estação de trabalho para laudo de imagem|61|61|Computadores e monitores
+385|Monitores para computadores|61|61|Computadores e monitores
+386|Notebook|61|61|Computadores e monitores
+387|Serviço de sustentação (manutenção, suporte e garantia) de computadores e monitores|61|61|Computadores e monitores
+388|Tablets|61|61|Computadores e monitores
+389|Impressoras, scanners e multifuncionais corporativas|62|62|Digitalização e impressão corporativa
+390|Serviço de digitalização|62|62|Digitalização e impressão corporativa
+391|Serviço de impressão corporativa|62|62|Digitalização e impressão corporativa
+392|Serviço de sustentação (manutenção, suporte e garantia) de digitalização e impressão corporativa|62|62|Digitalização e impressão corporativa
+393|Suprimentos de impressão|62|62|Digitalização e impressão corporativa
+394|Impressão em 3D|63|63|Impressão finalística
+395|Impressão para crachás e cartões|63|63|Impressão finalística
+396|Impressão para etiquetas|63|63|Impressão finalística
+397|Impressão para medicamentos|63|63|Impressão finalística
+398|Impressão para plantas baixa|63|63|Impressão finalística
+399|Impressão para pulseiras|63|63|Impressão finalística
+400|Insumos para impressão finalística|63|63|Impressão finalística
+401|Service desk|64|64|Suporte de TI
+402|Serviço de monitoramento de TI |64|64|Suporte de TI
+403|Gateway GSM |65|65|Telefonia
+404|Serviço de sustentação da solução de telefonia|65|65|Telefonia
+405|Smartphones |65|65|Telefonia
+406|Solução de telefonia fixa|65|65|Telefonia
+407|Solução de telefonia móvel|65|65|Telefonia
+408|Serviço de consultoria de TI|66|66|Governança de TI
+409|Sistema Operacional|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+410|Sistema de gerenciamento de ativos de TI|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+411|Sistema de virtualização|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+412|Programa de acesso remoto|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+413|Sistema gerenciador de banco de dados|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+414|Solução de infraestrutura de desktop virtual|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+415|Sistema de gerenciamento de serviços de TI|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+416|Sistema e monitoramento de TI|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+417|Aplicativos do pacote Office|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+418|Serviço de operação de infraestrutura, suporte e segurança de TI|67|67|Sistemas de infraestrutura, suporte e segurança de TI
+419|Agência de comunicação|68|68|Comunicação
+420|Agência de publicidade|68|68|Comunicação
+421|Assinaturas de veículos de imprensa|68|68|Comunicação
+422|Materiais gráficos para comunicação social|68|68|Comunicação
+423|Material de áudio, vídeo e foto|68|68|Comunicação
+424|Serviço de clipping jornalístico|68|68|Comunicação
+425|Serviço de clipping jurídico|68|68|Comunicação
+426|Serviço de mailing |68|68|Comunicação
+427|Assistencial|69|69|Eventos institucionais
+428|Ensino|69|69|Eventos institucionais
+429|Gestão|69|69|Eventos institucionais
+430|Pesquisa|69|69|Eventos institucionais
+431|Institutos de ciência e tecnologia, aceleradoras e startups|70|70|Cooperações e parcerias
+432|Organismos internacionais|70|70|Cooperações e parcerias
+433|Organizações nacionais|70|70|Cooperações e parcerias
+434|Análise de qualidade de água|71|71|Análises microbiológicas e físico-química
+435|Análise de qualidade de alimentos|71|71|Análises microbiológicas e físico-química
+436|Análise de qualidade de ar|71|71|Análises microbiológicas e físico-química
+437|Agente de portaria, Almoxarife, Arquivista, Carregador, Contínuo,  Recepções, Secretariado e Telefonista|72|72|Apoio assistencial, administrativo e de logística
+438|Equipamentos de Áudio, vídeo e foto|73|73|Equipamentos de multimídia
+439|Equipamentos diversos de multimídia e comunicação|73|73|Equipamentos de multimídia
+440|Transporte externo de pacientes|74|74|Transporte de pacientes
+441|In company|75|75|Capacitação
+442|Vaga Aberta|75|75|Capacitação
+443|Pós-Graduação|75|75|Capacitação

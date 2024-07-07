@@ -7,7 +7,7 @@ export default {
     //     return API.post('multicarteira/calendario-atividade/salvar', calendario)
     // },
 
-    listData(filter){
+    listar(filter){
         return API.post('/quotation-history', filter)
     },
 

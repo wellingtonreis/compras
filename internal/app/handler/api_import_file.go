@@ -9,16 +9,28 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	models "github.com/wellingtonreis/compras/internal/app/models/purchases"
 
+	date_custom "github.com/wellingtonreis/compras/pkg/date_custom"
 	dadosabertos "github.com/wellingtonreis/compras/pkg/service/compras/dados_abertos"
 
 	"github.com/wellingtonreis/compras/internal/app/platform/database/mongodb"
 	"github.com/wellingtonreis/compras/pkg/importer"
 	"github.com/wellingtonreis/compras/pkg/response"
 )
+
+func connectToMongoDB() *mongodb.MongoDB {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	db, err := mongodb.NewConnectionMongoDB(ctx)
+	if err != nil {
+		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
+	}
+	return db
+}
 
 func receiveAttachment(r *http.Request) (multipart.File, string, error) {
 	r.ParseMultipartForm(10 << 20)
@@ -84,84 +96,64 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 	convertedData := make([]models.CatalogCode, 0)
 	api := dadosabertos.FnDadosAbertosComprasGov()
 
-	now := time.Now().UTC()
-	year, month, day := now.Date()
-	hour := now.Hour()
-	minute := now.Minute()
-	second := now.Second()
-
-	today := time.Date(year, month, day, hour, minute, second, 0, time.FixedZone("", -3*60*60))
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	db, err := mongodb.NewConnectionMongoDB(ctx)
-	if err != nil {
-		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
-	}
+	db := connectToMongoDB()
 	defer db.Close()
-
 	sequence, err := db.GetNextSequenceValue("catalogcode")
 	if err != nil {
 		log.Fatal("Erro ao tentar cadastrar a sequencia de identificação:", err)
 	}
 
+	waitGroup := sync.WaitGroup{}
+	waitGroup.Add(len(data) - 1)
+
+	today := date_custom.GetToday()
 	for i, record := range data {
 		if i == 0 {
 			continue
 		}
 
-		result, err := api.ConsultarMaterial(record[0])
-		if err != nil {
-			log.Fatal("Error: ", err)
-			panic("Erro ao tentar consultar os itens de compras")
-		}
+		go func() {
+			result, err := api.ConsultarMaterial(record[0])
+			if err != nil {
+				log.Fatal("Error: ", err)
+				panic("Erro ao tentar consultar os itens de compras")
+			}
 
-		item := models.CatalogCode{
-			Catmat:       record[0],
-			Apresentacao: record[1],
-			Quantidade:   record[2],
-			Cotacao:      sequence,
-			Hu:           "",
-			Categoria:    "",
-			Subcategoria: "",
-			DataHora:     today,
-			Situacao:     "Iniciada",
-			ProcessoSei:  "",
-			Autor:        "",
-			DadosAPI:     result,
-		}
-		convertedData = append(convertedData, item)
+			item := models.CatalogCode{
+				Catmat:       record[0],
+				Apresentacao: record[1],
+				Quantidade:   record[2],
+				Cotacao:      sequence,
+				Hu:           "",
+				Categoria:    "",
+				Subcategoria: "",
+				DataHora:     today,
+				Situacao:     "Iniciada",
+				ProcessoSei:  "",
+				Autor:        "",
+				DadosAPI:     result,
+			}
+			convertedData = append(convertedData, item)
+			waitGroup.Done()
+		}()
 	}
+	waitGroup.Wait()
 	return &convertedData
 }
 
 func saveData(data models.Data) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	db, err := mongodb.NewConnectionMongoDB(ctx)
-	if err != nil {
-		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
-	}
+	db := connectToMongoDB()
 	defer db.Close()
-
 	var items []interface{}
 	for _, item := range data.Catalog {
 		items = append(items, item)
 	}
 
-	err = db.InsertData("purchases", items)
-	if err != nil {
-		log.Fatal(err)
-	}
+	db.InsertData("purchases", items)
 }
 
 func findLatest() *[]models.CatalogCode {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	db, err := mongodb.NewConnectionMongoDB(ctx)
-	if err != nil {
-		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
-	}
+	db := connectToMongoDB()
 	defer db.Close()
 	catalogData, err := models.SavePurchaseItemDocuments(db)
 	if err != nil {

@@ -29,8 +29,7 @@ func LoadConfig() (*conf, error) {
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
 	viper.AddConfigPath(wd)
-	viper.SetConfigFile(filepath.Join(wd, "/cmd/pesquisa_de_preco/.env"))
-	// viper.SetConfigFile(filepath.Join(wd, ".env"))
+	viper.SetConfigFile(filepath.Join(wd, ".env"))
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {

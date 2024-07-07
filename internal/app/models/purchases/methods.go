@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/wellingtonreis/compras/pkg/date_custom"
+
 	"github.com/wellingtonreis/compras/internal/app/platform/database/mongodb"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -123,7 +125,7 @@ func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
 	return updatedDocuments, nil
 }
 
-func SearchQuotationHistory(db *mongodb.MongoDB, catalogCode *CatalogCode) ([]QuotationHistory, error) {
+func SearchQuotationHistory(db *mongodb.MongoDB, filter *FilterQuotationHistory) ([]QuotationHistory, error) {
 	collection := db.Client.Database(schema).Collection("purchases")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -131,8 +133,43 @@ func SearchQuotationHistory(db *mongodb.MongoDB, catalogCode *CatalogCode) ([]Qu
 
 	pipeline := mongo.Pipeline{}
 
-	if catalogCode.Cotacao > 0 {
-		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"cotacao", catalogCode.Cotacao}}}})
+	if filter.Cotacao > 0 {
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"cotacao", filter.Cotacao}}}})
+	}
+
+	if filter.Hu != "" {
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"hu", filter.Hu}}}})
+	}
+
+	if filter.Categoria != "" {
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"categoria", filter.Categoria}}}})
+	}
+
+	if filter.Subcategoria != "" {
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"subcategoria", filter.Subcategoria}}}})
+	}
+
+	if filter.Situacao != "" {
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"situacao", filter.Situacao}}}})
+	}
+
+	if filter.Autor != "" {
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"autor", filter.Autor}}}})
+	}
+
+	if filter.Processosei != "" {
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{{"processosei", filter.Processosei}}}})
+	}
+
+	if filter.DataInicio != "" && filter.DataFim != "" {
+		date_start := date_custom.ConvertDateStringToISO8601(filter.DataInicio)
+		date_end := date_custom.ConvertDateStringToISO8601(filter.DataFim)
+		pipeline = append(pipeline, bson.D{{"$match", bson.D{
+			{"datahora", bson.D{
+				{"$gte", date_start},
+				{"$lte", date_end},
+			}},
+		}}})
 	}
 
 	pipeline = append(pipeline, bson.D{

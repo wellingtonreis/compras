@@ -1,16 +1,20 @@
 package handler
 
 import (
-	"net/http"
-
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
-func SetupRoutes() *mux.Router {
-	router := mux.NewRouter()
+func SetupRoutes() *chi.Mux {
+	router := chi.NewRouter()
+	router.Use(middleware.RequestID)
+	router.Use(middleware.RealIP)
+	router.Use(middleware.Logger)
+	router.Use(middleware.Recoverer)
 
-	router.HandleFunc("/home", HomeHandler).Methods(http.MethodGet)
-	router.HandleFunc("/upload", UploadHandler).Methods(http.MethodPost)
-	router.HandleFunc("/quotation-history", ListQuotationHistoryHandler).Methods(http.MethodPost)
+	router.Get("/home", HomeHandler)
+	router.Post("/upload", UploadHandler)
+	router.Post("/quotation-history", ListQuotationHistoryHandler)
+	router.Get("/classification-segment", ListOptionsCategoryHandler)
 	return router
 }

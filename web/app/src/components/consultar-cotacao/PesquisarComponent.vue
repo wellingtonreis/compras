@@ -1,8 +1,8 @@
 <template>
   <div>
     <q-form
-      @submit="pesquisarStore.submitForm()"
-      @reset="pesquisarStore.resetForm()"
+      @submit="consultarCotacaoStore.enviar()"
+      @reset="consultarCotacaoStore.reiniciar()"
     >
       <div class="row q-pa-md items-center justify-center bg-grey-1">
         <div class="col-12 col-md-2 text-right sm:text-left q-pa-md">
@@ -12,10 +12,9 @@
           <q-select
             label="Digite o número da cotação e pressione Enter."
             outlined
-            v-model="filtro.id_cotacao"
+            v-model="filtro.cotacao"
             use-input
             use-chips
-            multiple
             hide-dropdown-icon
             input-debounce="0"
             @new-value="createValue"
@@ -71,8 +70,8 @@
                               ? `0${range.to.month}`
                               : range.to.month;
 
-                          filtro.datainicio = `${fromDay}/${fromMonth}/${range.from.year}`;
-                          filtro.datafim = `${toDay}/${toMonth}/${range.to.year}`;
+                          filtro.data_inicio = `${fromDay}/${fromMonth}/${range.from.year}`;
+                          filtro.data_fim = `${toDay}/${toMonth}/${range.to.year}`;
                         }
                       "
                     >
@@ -87,7 +86,7 @@
                     <q-input
                       outlined
                       dense
-                      v-model="filtro.datainicio"
+                      v-model="filtro.data_inicio"
                       mask="##/##/####"
                       hint="Data de Início"
                       disable
@@ -100,7 +99,7 @@
                             transition-hide="scale"
                           >
                             <q-date
-                              v-model="filtro.datainicio"
+                              v-model="filtro.data_inicio"
                               mask="DD/MM/YYYY"
                             >
                               <div class="row items-center justify-end">
@@ -122,7 +121,7 @@
                     <q-input
                       outlined
                       dense
-                      v-model="filtro.datafim"
+                      v-model="filtro.data_fim"
                       mask="##/##/####"
                       hint="Data Fim"
                       disable
@@ -134,7 +133,7 @@
                             transition-show="scale"
                             transition-hide="scale"
                           >
-                            <q-date v-model="filtro.datafim" mask="DD/MM/YYYY">
+                            <q-date v-model="filtro.data_fim" mask="DD/MM/YYYY">
                               <div class="row items-center justify-end">
                                 <q-btn
                                   v-close-popup
@@ -166,7 +165,8 @@
                   fill-input
                   input-debounce="0"
                   :options="opcoesCategorias"
-                  @filter="filtraCategoria"
+                  @filter="consultarCotacaoStore.filtraCategoria"
+                  @update:model-value="consultarCotacaoStore.selecionaSubcategoria(filtro.categoria.value)"
                   hint="Lista suspensa de categorias"
                   dense
                 >
@@ -194,7 +194,7 @@
                   fill-input
                   input-debounce="0"
                   :options="opcoesSubCategorias"
-                  @filter="filtraSubCategoria"
+                  @filter="consultarCotacaoStore.filtraSubcategoria"
                   hint="Lista suspensa de subcategorias"
                   dense
                 >

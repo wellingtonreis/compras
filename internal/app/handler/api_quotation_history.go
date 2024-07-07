@@ -16,16 +16,20 @@ import (
 
 func ListQuotationHistoryHandler(w http.ResponseWriter, r *http.Request) {
 
-	parameter, erro := io.ReadAll(r.Body)
-	if erro != nil {
+	parameter, err := io.ReadAll(r.Body)
+	if err != nil {
 		w.Write([]byte("Falha ao ler o corpo da requisição!"))
 		return
 	}
-	var catalogCode models.CatalogCode
-	if erro = json.Unmarshal(parameter, &catalogCode); erro != nil {
-		w.Write([]byte("Erro ao converter os dados do código de catalogo para struct"))
+	r.Body.Close()
+
+	var filter models.FilterQuotationHistory
+	err = json.Unmarshal(parameter, &filter)
+	if err != nil {
+		w.Write([]byte("Erro ao deserializar o corpo da requisição"))
 		return
 	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	db, err := mongodb.NewConnectionMongoDB(ctx)
@@ -33,7 +37,7 @@ func ListQuotationHistoryHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
 	}
 	defer db.Close()
-	result, err := models.SearchQuotationHistory(db, &catalogCode)
+	result, err := models.SearchQuotationHistory(db, &filter)
 	if err != nil {
 		log.Fatalf("Erro ao tentar buscar os documentos: %v", err)
 	}

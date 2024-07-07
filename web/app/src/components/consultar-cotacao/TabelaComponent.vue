@@ -58,6 +58,7 @@ const {
 } = storeToRefs(consultarCotacaoStore);
 
 onMounted(()=>{
-  consultarCotacaoStore.listData();
+  consultarCotacaoStore.listaHitoricoCotacao();
+  consultarCotacaoStore.listaSuspensaCategoriaEhSubcategoria();
 })
 </script>

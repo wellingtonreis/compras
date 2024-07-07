@@ -18,30 +18,20 @@ func (db *MongoDB) InsertData(collectionName string, data []interface{}) error {
 	return nil
 }
 
-func (db *MongoDB) GetData(collectionName string) ([]interface{}, error) {
-	var items []interface{}
-
+func (db *MongoDB) GetData(collectionName string, ctx context.Context, filter interface{}, reference interface{}) error {
 	collection := db.Client.Database(schema).Collection(collectionName)
-	cursor, err := collection.Find(context.Background(), nil)
+	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	defer cursor.Close(context.Background())
+	defer cursor.Close(ctx)
 
-	for cursor.Next(context.Background()) {
-		var item interface{}
-		if err := cursor.Decode(&item); err != nil {
-			return nil, err
-		}
-		items = append(items, item)
+	if err = cursor.All(ctx, reference); err != nil {
+		return err
 	}
 
-	if err := cursor.Err(); err != nil {
-		return nil, err
-	}
-
-	return items, nil
+	return nil
 }
 
 func (db *MongoDB) UpdateData(collectionName string, filter []byte, update []byte) error {

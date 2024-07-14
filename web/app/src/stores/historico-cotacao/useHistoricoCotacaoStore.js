@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
-import ajaxConsultarCotacao from "@/http/ajax-consultar-cotacao/request.js";
+import ajaxHistoricoCotacao from "@/http/ajax-historico-cotacao/request.js";
 import ajaxCategoriaEhSubcategoria from "@/http/ajax-categoria-subcategoria/request.js";
 
 import { Notify } from 'quasar'
 
-export const useConsultarCotacaoStore = defineStore('useConsultarCotacaoStore', {
+export const useHistoricoCotacaoStore = defineStore('useHistoricoCotacaoStore', {
   state: () => ({
     filtro: {
       cotacao: null,
@@ -135,9 +135,9 @@ export const useConsultarCotacaoStore = defineStore('useConsultarCotacaoStore', 
       this.listaHitoricoCotacao();
     },
     listaHitoricoCotacao(){
-      ajaxConsultarCotacao.listar(this.filtro).then((res)=>{
+      ajaxHistoricoCotacao.listar(this.filtro).then((res)=>{
         if(res.data?.status_code == 200){
-            this.rows = res.data?.embedded
+            this.rows = res.data?.embedded ?? [];
             this.reiniciar()
         }
       }).catch(error => {

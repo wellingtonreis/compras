@@ -1,8 +1,8 @@
 <template>
   <div>
     <q-form
-      @submit="consultarCotacaoStore.enviar()"
-      @reset="consultarCotacaoStore.reiniciar()"
+      @submit="historicoCotacaoStore.enviar()"
+      @reset="historicoCotacaoStore.reiniciar()"
     >
       <div class="row q-pa-md items-center justify-center bg-grey-1">
         <div class="col-12 col-md-2 text-right sm:text-left q-pa-md">
@@ -165,8 +165,8 @@
                   fill-input
                   input-debounce="0"
                   :options="opcoesCategorias"
-                  @filter="consultarCotacaoStore.filtraCategoria"
-                  @update:model-value="consultarCotacaoStore.selecionaSubcategoria(filtro.categoria.value)"
+                  @filter="historicoCotacaoStore.filtraCategoria"
+                  @update:model-value="historicoCotacaoStore.selecionaSubcategoria(filtro.categoria.value)"
                   hint="Lista suspensa de categorias"
                   dense
                 >
@@ -194,7 +194,7 @@
                   fill-input
                   input-debounce="0"
                   :options="opcoesSubCategorias"
-                  @filter="consultarCotacaoStore.filtraSubcategoria"
+                  @filter="historicoCotacaoStore.filtraSubcategoria"
                   hint="Lista suspensa de subcategorias"
                   dense
                 >
@@ -266,9 +266,9 @@
 <script setup>
 import { ref, toRaw } from "vue";
 import { storeToRefs } from "pinia";
-import { useConsultarCotacaoStore } from "stores/consultar-cotacao/useConsultarCotacaoStore.js";
+import { useHistoricoCotacaoStore } from "stores/historico-cotacao/useHistoricoCotacaoStore.js";
 
-const consultarCotacaoStore = useConsultarCotacaoStore();
+const historicoCotacaoStore = useHistoricoCotacaoStore();
 const text = ref(null);
 const {
   filtro,
@@ -277,7 +277,7 @@ const {
   opcoesCategorias,
   opcoesSubCategorias,
   opcoesSituacao,
-} = storeToRefs(consultarCotacaoStore);
+} = storeToRefs(historicoCotacaoStore);
 
 const categoriaFiltro = toRaw(opcoesCategorias.value);
 const filtraCategoria = (val, update) => {

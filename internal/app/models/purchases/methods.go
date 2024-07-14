@@ -199,3 +199,31 @@ func SearchQuotationHistory(db *mongodb.MongoDB, filter *FilterQuotationHistory)
 
 	return docs, nil
 }
+
+func ListPurchaseItems(db *mongodb.MongoDB, quotation int64) ([]ItemPurchase, error) {
+	collection := db.Client.Database(schema).Collection("purchases")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	pipeline := mongo.Pipeline{
+		{{"$match", bson.D{{"cotacao", quotation}, {"dadosconsolidados", bson.D{{"$ne", nil}}}}}},
+		{{"$project", bson.D{{"_id", 0}, {"dadosconsolidados", 1}}}},
+		{{"$unwind", "$dadosconsolidados"}},
+		{{"$replaceRoot", bson.D{{"newRoot", "$dadosconsolidados"}}}},
+	}
+
+	cursor, err := collection.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao executar a consulta de agregação: %v", err)
+	}
+	defer cursor.Close(ctx)
+
+	var docs []ItemPurchase
+	if err = cursor.All(ctx, &docs); err != nil {
+		return nil, fmt.Errorf("erro ao tentar ler todos os documentos: %v", err)
+	}
+
+	return docs, nil
+
+}

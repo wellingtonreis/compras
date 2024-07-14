@@ -128,16 +128,10 @@ defineOptions({
 
 const linksList = [
   {
-    title: "Consultar",
-    caption: "Lista de pesquisa de preço",
+    title: "Histórico de cotação",
+    caption: "Lista o histórico de cotações",
     icon: "search",
-    link: "/consultar-cotacao/pesquisar-itens-compras",
-  },
-  {
-    title: "Importar",
-    caption: "Adicionar cotação",
-    icon: "file_upload",
-    link: "/importacao/importar-itens-compras",
+    link: "/historico-cotacao/listar",
   },
 ];
 

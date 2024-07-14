@@ -21,21 +21,20 @@ type conf struct {
 func LoadConfig() (*conf, error) {
 	var cfg *conf
 
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
+	path_file_env := os.Getenv("PATH_ROOT")
 
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
-	viper.AddConfigPath(wd)
-	viper.SetConfigFile(filepath.Join(wd, ".env"))
+	viper.AddConfigPath(path_file_env)
+	viper.SetConfigFile(filepath.Join(path_file_env, ".env"))
 	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err != nil {
+	err := viper.ReadInConfig()
+	if err != nil {
 		return nil, fmt.Errorf("failed to read config file: %w", err)
 	}
-	if err := viper.Unmarshal(&cfg); err != nil {
+	err = viper.Unmarshal(&cfg)
+	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
 	}
 	return cfg, err

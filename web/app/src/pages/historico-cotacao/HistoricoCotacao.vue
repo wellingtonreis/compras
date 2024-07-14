@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import PesquisarComponent from "components/consultar-cotacao/PesquisarComponent.vue";
-import TabelaComponent from "components/consultar-cotacao/TabelaComponent.vue";
+import PesquisarComponent from "components/historico-cotacao/PesquisarComponent.vue";
+import TabelaComponent from "components/historico-cotacao/TabelaComponent.vue";
 
 export default {
   components: {

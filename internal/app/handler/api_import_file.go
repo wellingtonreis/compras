@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"log"
@@ -10,7 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
-	"time"
 
 	models "github.com/wellingtonreis/compras/internal/app/models/purchases"
 
@@ -21,16 +19,6 @@ import (
 	"github.com/wellingtonreis/compras/pkg/importer"
 	"github.com/wellingtonreis/compras/pkg/response"
 )
-
-func connectToMongoDB() *mongodb.MongoDB {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	db, err := mongodb.NewConnectionMongoDB(ctx)
-	if err != nil {
-		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
-	}
-	return db
-}
 
 func receiveAttachment(r *http.Request) (multipart.File, string, error) {
 	r.ParseMultipartForm(10 << 20)
@@ -96,7 +84,7 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 	convertedData := make([]models.CatalogCode, 0)
 	api := dadosabertos.FnDadosAbertosComprasGov()
 
-	db := connectToMongoDB()
+	db := mongodb.ConnectToMongoDB()
 	defer db.Close()
 	sequence, err := db.GetNextSequenceValue("catalogcode")
 	if err != nil {
@@ -142,7 +130,7 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 }
 
 func saveData(data models.Data) {
-	db := connectToMongoDB()
+	db := mongodb.ConnectToMongoDB()
 	defer db.Close()
 	var items []interface{}
 	for _, item := range data.Catalog {
@@ -153,7 +141,7 @@ func saveData(data models.Data) {
 }
 
 func findLatest() *[]models.CatalogCode {
-	db := connectToMongoDB()
+	db := mongodb.ConnectToMongoDB()
 	defer db.Close()
 	catalogData, err := models.SavePurchaseItemDocuments(db)
 	if err != nil {

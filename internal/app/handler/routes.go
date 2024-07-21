@@ -17,5 +17,6 @@ func SetupRoutes() *chi.Mux {
 	router.Post("/quotation-history", ListQuotationHistoryHandler)
 	router.Get("/classification-segment", ListOptionsCategoryHandler)
 	router.Get("/purchase-items/{quotation}", ListPurchaseItemsHandler)
+	router.Put("/purchase-items/{quotation}", UpdatePurchaseItemsHandler)
 	return router
 }

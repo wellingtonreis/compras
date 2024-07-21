@@ -13,6 +13,16 @@ type MongoDB struct {
 	Client *mongo.Client
 }
 
+func ConnectToMongoDB() *MongoDB {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	db, err := NewConnectionMongoDB(ctx)
+	if err != nil {
+		log.Fatal("Erro ao tentar se conectar ao mongodb:", err)
+	}
+	return db
+}
+
 func NewConnectionMongoDB(ctx context.Context) (*MongoDB, error) {
 	mongoURI := GetMongoDBURI()
 	if mongoURI == "" {

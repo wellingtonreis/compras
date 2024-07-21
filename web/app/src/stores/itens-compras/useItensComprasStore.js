@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import ajaxItensCompras from "@/http/ajax-itens-compras/request.js";
 
-import { Notify } from 'quasar'
+import { Dialog, Notify } from 'quasar'
+import { data } from 'autoprefixer';
 
 export const useItensComprasStore = defineStore('useItensComprasStore', {
   state: () => ({
@@ -88,8 +89,98 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
     rows: [],
     erroPrecoUnitario: false,
     erroMensagemPrecoUnitario: "",
+    pagination: {
+      rowsPerPage: 0
+    },
+    fixed: false,
+    catmat: '',
+    descricao: '',
+    apresentacao: '',
+    justificativas: []
   }),
   actions: {
+    atualizarPrecoUnitario(cotacao, dados, valor, valorInicial){
+      Dialog.create({
+        title: 'Justificativa',
+        message: 'Descreva o motivo da alteração? (Minimum 20 characters)',
+        prompt: {
+          model: '',
+          isValid: val => val.length > 20,
+          type: 'text'
+        },
+        cancel: true,
+        persistent: true
+      })
+      .onCancel(() => {
+        dados.precoUnitario = valorInicial;
+        Notify.create({
+          message: 'Operação cancelada!',
+          color: 'negative',
+          position: 'top-right',
+          timeout: 3500,
+          textColor: 'white'
+        })
+      })
+      .onOk(justificativa => {
+        dados.precoUnitario = valor;
+        dados.justificativa = [{
+          descricao: justificativa,
+          data: new Date().toISOString().slice(0, 10),
+          autor: 'Usuário',
+          valor: valor,
+          valorInicial: valorInicial
+        }];
+        ajaxItensCompras.atualizar(cotacao, dados).then((res)=>{
+          if(res.data?.status_code == 200){
+            Notify.create({
+              message: `Preço unitário de ${valorInicial} para ${valor} atualizado com sucesso!`,
+              color: 'positive',
+              position: 'top-right',
+              timeout: 3500,
+              textColor: 'white'
+            })
+
+            setTimeout(() => {
+              location.reload();
+            }, 3000)
+              
+          }
+        }).catch(error => {
+          Notify.create({
+            message: 'Erro ao atualizar preço unitário!',
+            color: 'negative',
+            position: 'top-right',
+            timeout: 3500,
+            textColor: 'white'
+          })
+        })
+      })
+
+    },
+    exibirHistorico(item){
+      if(item?.justificativa?.length == 0){
+        Notify.create({
+          message: 'Não há histórico de alterações!',
+          color: 'negative',
+          position: 'top-right',
+          timeout: 3500,
+          textColor: 'white'
+        })
+        return;
+      }
+
+      this.fixed = true;
+      this.catmat = item?.codigoItemCatalogo;
+      this.descricao = item?.descricaoItem;
+
+      const nomeUnidadeFornecimento = item?.nomeUnidadeFornecimento || ""
+      const capacidadeUnidadeFornecimento = item?.capacidadeUnidadeFornecimento || ""
+      const siglaUnidadeMedida = item?.siglaUnidadeMedida || ""
+      const apresentacao = `${nomeUnidadeFornecimento} ${capacidadeUnidadeFornecimento} ${siglaUnidadeMedida}`
+
+      this.apresentacao = apresentacao
+      this.justificativas = item?.justificativa.sort((a, b) => new Date(b.data) - new Date(a.data));
+    },
     validarPrecoUnitario (val) {
       const regexDecimal = /^\d+(\.\d+)?$/;
       if (!regexDecimal.test(val)) {
@@ -123,6 +214,12 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
       } else {
         return 'Outros. Verificar/anexar no processo';
       }
+    },
+    formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      });
     },
     listaItensCompras(cotacao){
       ajaxItensCompras.listar(cotacao).then((res)=>{

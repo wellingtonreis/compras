@@ -186,5 +186,9 @@ export const useHistoricoCotacaoStore = defineStore('useHistoricoCotacaoStore', 
         return { "value": val, "label": subcategoria.name };
       })
     },
+    uploadFinalizado(){
+      this.dialog = false;
+      this.listaHitoricoCotacao();
+    }
   }
 });

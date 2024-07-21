@@ -10,6 +10,7 @@ import (
 	"github.com/wellingtonreis/compras/internal/app/platform/database/mongodb"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -106,6 +107,12 @@ func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
 	var updatedDocuments []CatalogCode
 
 	for _, doc := range docs {
+
+		for i := range doc.DadosConsolidados {
+			doc.DadosConsolidados[i].ID = primitive.NewObjectID()
+			doc.DadosConsolidados[i].Justificativa = []Justification{}
+		}
+
 		filter := bson.M{"catmat": doc.Catmat, "cotacao": doc.Cotacao}
 		update := bson.M{
 			"$set": bson.M{
@@ -128,7 +135,7 @@ func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
 func SearchQuotationHistory(db *mongodb.MongoDB, filter *FilterQuotationHistory) ([]QuotationHistory, error) {
 	collection := db.Client.Database(schema).Collection("purchases")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	pipeline := mongo.Pipeline{}
@@ -203,7 +210,7 @@ func SearchQuotationHistory(db *mongodb.MongoDB, filter *FilterQuotationHistory)
 func ListPurchaseItems(db *mongodb.MongoDB, quotation int64) ([]ItemPurchase, error) {
 	collection := db.Client.Database(schema).Collection("purchases")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	pipeline := mongo.Pipeline{
@@ -225,5 +232,36 @@ func ListPurchaseItems(db *mongodb.MongoDB, quotation int64) ([]ItemPurchase, er
 	}
 
 	return docs, nil
+
+}
+
+func UpdatePurchaseItems(db *mongodb.MongoDB, quotation int64, items *ItemPurchase) error {
+	collection := db.Client.Database(schema).Collection("purchases")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	id, err := primitive.ObjectIDFromHex(items.ID.Hex())
+	if err != nil {
+		return fmt.Errorf("erro ao tentar converter o ID para ObjectID: %v", err)
+	}
+
+	items.Justificativa[0].ID = primitive.NewObjectID()
+	filter := bson.M{"cotacao": quotation, "dadosconsolidados.id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"dadosconsolidados.$.precounitario": items.PrecoUnitario,
+		},
+		"$push": bson.M{
+			"dadosconsolidados.$.justificativa": items.Justificativa[0],
+		},
+	}
+
+	opts := options.Update().SetUpsert(true)
+	if _, err := collection.UpdateOne(ctx, filter, update, opts); err != nil {
+		return fmt.Errorf("erro ao tentar atualizar o documento: %v", err)
+	}
+
+	return nil
 
 }

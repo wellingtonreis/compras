@@ -45,8 +45,21 @@
       </template>
     </q-table>
 
-    <q-dialog v-model="dialog" backdrop-filter="blur(4px) saturate(150%)" full-width>
-      <q-card flat bordered style="height: 20vw;">
+    <q-dialog v-model="dialog" 
+      persistent
+      backdrop-filter="blur(4px) saturate(150%)" 
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      >
+      <q-card flat bordered>
+        <q-bar>
+          <q-space />
+          <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip class="bg-white text-primary">Fecha</q-tooltip>
+          </q-btn>
+        </q-bar>
+
         <q-card-section>
           <div class="text-h6">Criar nova cotação</div>
           <div class="text-subtitle2">Cotação</div>
@@ -78,7 +91,8 @@
                 url="http://localhost:3000/upload" 
                 max-file-size="10240"
                 accept=".csv, .xls, .xlsx"
-                style="width: 100%" />
+                style="width: 100%"
+                @finish="historicoCotacaoStore.uploadFinalizado" />
               </div>
             </div>
           </q-tab-panel>

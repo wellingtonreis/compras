@@ -6,4 +6,8 @@ export default {
     listar(cotacao){
         return API.get(`/purchase-items/${cotacao}`)
     },
+
+    atualizar(cotacao, item){
+        return API.put(`/purchase-items/${cotacao}`, item)
+    }
 }

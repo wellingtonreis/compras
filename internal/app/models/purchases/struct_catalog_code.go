@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type CatalogCode struct {
 	Catmat            string         `json:"catmat"`

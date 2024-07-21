@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type FilterQuotationHistory struct {
 	Cotacao      int64  `json:"cotacao"`

@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - "3000:3000"
+    volumes:
+      - $GOPATH/src/compras/backend:/app
+    depends_on:
+      - mongodb
+    working_dir: /app
+    command: air
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
+
+volumes:
+  mongodb_data:

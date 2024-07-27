@@ -1,27 +1,42 @@
-# If you prefer the allow list template instead of the deny list, see community template:
-# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
-#
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+backend/data
+backend/tmp
+backend/vendor
+backend/testdata
+backend/assets
+backend/.gitignore
+backend/.air.toml
+backend/.env
 
-# Test binary, built with `go test -c`
-*.test
+frontend/.DS_Store
+frontend/.thumbs.db
+frontend/node_modules
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# Quasar core related directories
+frontend/.quasar
+frontend/dist
+frontend/quasar.config.*.temporary.compiled*
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+# Cordova related directories and files
+frontend/src-cordova/node_modules
+frontend/src-cordova/platforms
+frontend/src-cordova/plugins
+frontend/src-cordova/www
 
-# Go workspace file
-go.work
-go.work.sum
-web/app/.quasar
-web/app/node_modules
-web/app/package-lock.json
-__debug_bin*
-*.env
+# Capacitor related directories and files
+frontend/src-capacitor/www
+frontend/src-capacitor/node_modules
+
+# Log files
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Editor directories and files
+frontend/.idea
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+
+# local .env files
+frontend/.env.local*

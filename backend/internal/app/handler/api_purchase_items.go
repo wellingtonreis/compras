@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -68,6 +69,37 @@ func UpdatePurchaseItemsHandler(w http.ResponseWriter, r *http.Request) {
 	err = models.UpdatePurchaseItems(db, quotation, &items)
 	if err != nil {
 		log.Fatalf("Erro ao tentar atualizar os documentos: %v", err)
+	}
+
+	params := response.ResponseParams{
+		StatusCode: 200,
+		Message:    "Operação realizada com sucesso.",
+	}
+
+	jsonResponse := response.CreateJSONResponse(params)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(jsonResponse))
+}
+
+func DeletePurchaseItemsHandler(w http.ResponseWriter, r *http.Request) {
+	quotationStr := chi.URLParam(r, "quotation")
+	quotation, err := strconv.ParseInt(quotationStr, 10, 64)
+	if err != nil {
+		log.Fatalf("Erro ao converter a cotação para int64: %v", err)
+	}
+	fmt.Println(r.Body)
+	var items models.ItemPurchase
+	err = json.NewDecoder(r.Body).Decode(&items)
+	if err != nil {
+		log.Fatalf("Erro ao decodificar o corpo da requisição: %v", err)
+	}
+
+	db := mongodb.ConnectToMongoDB()
+	defer db.Close()
+
+	err = models.DeletePurchaseItems(db, quotation, &items)
+	if err != nil {
+		log.Fatalf("Erro ao tentar deletar os documentos: %v", err)
 	}
 
 	params := response.ResponseParams{

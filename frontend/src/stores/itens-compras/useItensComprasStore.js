@@ -1,17 +1,26 @@
 import { defineStore } from 'pinia';
 import ajaxItensCompras from "@/http/ajax-itens-compras/request.js";
+import ajaxCategoriaEhSubcategoria from "@/http/ajax-categoria-subcategoria/request.js";
 
 import { Dialog, Notify } from 'quasar'
-import { data } from 'autoprefixer';
 
 export const useItensComprasStore = defineStore('useItensComprasStore', {
   state: () => ({
+    autor: "Anônimo",
+    categorias: [],
+    opcoesCategorias: [],
+    subcategorias: [],
+    opcoesSubCategorias: [],
+    categoria: "",
+    subcategoria: "",
+    processosei: "",
+    urlprotocolosei: "",
     columns: [
       {
         name: "catmat",
         required: true,
         label: "CATMAT",
-        align: "left",
+        align: "center",
         field: (row) => row.codigoItemCatalogo,
         format: (val) => `${val}`,
         sortable: true,
@@ -20,7 +29,7 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         name: "descricao",
         required: true,
         label: "DESCRIÇÃO",
-        align: "left",
+        align: "center",
         field: (row) => row.descricaoItem,
         format: (val) => `${val}`,
         sortable: true,
@@ -29,7 +38,7 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         name: "apresentacao",
         required: true,
         label: "APRESENTAÇÃO",
-        align: "left",
+        align: "center",
         field: (row) => {
           const nomeUnidadeFornecimento = row.nomeUnidadeFornecimento || ""
           const capacidadeUnidadeFornecimento = row.capacidadeUnidadeFornecimento || ""
@@ -43,7 +52,7 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         name: "idCompra",
         required: true,
         label: "ID COMPRA",
-        align: "left",
+        align: "center",
         field: (row) => row,
         format: (val) => `${val}`,
         sortable: true,
@@ -52,7 +61,7 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         name: "dataCompra",
         required: true,
         label: "DATA COMPRA",
-        align: "left",
+        align: "center",
         field: (row) => row.dataCompra,
         format: (val) => {
           const date = new Date(val);
@@ -66,7 +75,7 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         name: "quantidade",
         required: true,
         label: "QUANTIDADE COMPRADA DE ITEM",
-        align: "left",
+        align: "center",
         field: (row) => row.quantidade,
         format: (val) => `${val}`,
         sortable: true,
@@ -75,16 +84,23 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         name: "precoUnitario",
         required: true,
         label: "PREÇO UNITÁRIO",
-        align: "left",
+        align: "center",
         sortable: true,
       },
       {
         name: "justificativa",
-        required: true,
+        required: false,
         label: "JUSTIFICATIVA",
-        align: "left",
-        sortable: true,
+        align: "center",
+        sortable: false,
       },
+      {
+        name: "remover",
+        required: false,
+        label: "REMOVER",
+        align: "center",
+        sortable: false,
+      }
     ],
     rows: [],
     erroPrecoUnitario: false,
@@ -99,7 +115,68 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
     justificativas: []
   }),
   actions: {
+    removerItemDeCompra (index, cotacao, dados) {
+      const vm = this;
+      Dialog.create({
+        title: 'Justificativa',
+        message: 'Descreva o motivo da exclusão deste item? (Minimum 20 characters)',
+        prompt: {
+          model: '',
+          isValid: val => val.length > 20,
+          type: 'text'
+        },
+        cancel: true,
+        persistent: true
+      })
+      .onCancel(() => {
+        Notify.create({
+          message: 'Operação cancelada!',
+          color: 'negative',
+          position: 'top-right',
+          timeout: 3500,
+          textColor: 'white'
+        })
+      })
+      .onOk(justificativa => {
+        
+        dados.deleteat = new Date().toISOString();
+        dados.justificativa = [{
+          descricao: justificativa,
+          data: new Date().toISOString().slice(0, 10),
+          autor: vm.autor,
+          valor: null,
+          valorInicial: null,
+          deleteat: new Date().toISOString(),
+        }];
+
+        ajaxItensCompras.remover(cotacao, dados).then((res)=>{
+          if(res.data?.status_code == 200){
+            Notify.create({
+              message: `Item excluído!`,
+              color: 'positive',
+              position: 'top-right',
+              timeout: 3500,
+              textColor: 'white'
+            })
+            vm.rows = [ ...vm.rows.slice(0, index), ...vm.rows.slice(index + 1) ]
+            setTimeout(() => {
+              location.reload();
+            }, 3000)
+          }
+        }).catch(error => {
+          console.log(error);
+          Notify.create({
+            message: 'Erro ao tentar excluir o item!',
+            color: 'negative',
+            position: 'top-right',
+            timeout: 3500,
+            textColor: 'white'
+          })
+        })
+      })
+    },
     atualizarPrecoUnitario(cotacao, dados, valor, valorInicial){
+      const vm = this;
       Dialog.create({
         title: 'Justificativa',
         message: 'Descreva o motivo da alteração? (Minimum 20 characters)',
@@ -122,11 +199,12 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         })
       })
       .onOk(justificativa => {
+        dados.deleteat = null;
         dados.precoUnitario = valor;
         dados.justificativa = [{
           descricao: justificativa,
           data: new Date().toISOString().slice(0, 10),
-          autor: 'Usuário',
+          autor: vm.autor,
           valor: valor,
           valorInicial: valorInicial
         }];
@@ -234,6 +312,43 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
           textColor: 'white',
           actions: [{ icon: 'close', color: 'white' }]
         })
+      })
+    },
+    listaSuspensaCategoriaEhSubcategoria(){
+      ajaxCategoriaEhSubcategoria.listar().then((res)=>{
+        if(res.data?.status_code == 200){
+          this.categorias = res.data?.embedded.map((categoria) => {
+            this.subcategorias[categoria._id] = categoria.subcategories;
+            return { "value": categoria._id, "label": categoria.name };
+          })
+        }
+      }).catch(error => {
+        Notify.setDefaults({
+          position: 'top-right',
+          timeout: 2500,
+          textColor: 'white',
+          actions: [{ icon: 'close', color: 'white' }]
+        })
+      })
+    },
+    filtraCategoria (val, update) {
+      this.opcoesCategorias = this.categorias
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.opcoesCategorias = this.categorias.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    filtraSubcategoria (val, update) {
+      update(() => {
+        const needle = val.toLowerCase()
+        this.opcoesSubCategorias = this.opcoesSubCategorias.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
+    selecionaSubcategoria (val) {
+      this.subcategoria = "";
+      this.opcoesSubCategorias = this.subcategorias[val].map((subcategoria) => { 
+        return { "value": val, "label": subcategoria.name };
       })
     },
   }

@@ -92,7 +92,7 @@
                 max-file-size="10240"
                 accept=".csv, .xls, .xlsx"
                 style="width: 100%"
-                @finish="historicoCotacaoStore.uploadFinalizado" />
+                @finish="historicoCotacaoStore.uploadFinalizado()" />
               </div>
             </div>
           </q-tab-panel>

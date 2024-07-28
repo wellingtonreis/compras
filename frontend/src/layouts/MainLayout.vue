@@ -22,7 +22,9 @@
         <q-space />
 
         <q-btn flat dense icon-right="arrow_drop_down">
-          <q-avatar color="primary" text-color="white">W</q-avatar>
+          <q-avatar color="primary" text-color="white">
+          {{ username.charAt(0) }}
+          </q-avatar>
 
           <q-menu>
             <div class="row no-wrap q-pa-md" style="font-size: small;">
@@ -30,8 +32,8 @@
                 <div class="text-h6 q-mb-md">
                   <div class="bg-blue-1 q-mt-md text-center text-caption q-mb-xs" style="padding: 1rem; font-size: 10px;">
                       <q-icon name="perm_contact_calendar" size="22px" />
-                      WELLINGTON GOMES DE ANDRADE REIS <br> 
-                      014.985.781-01
+                      {{ username }} <br> 
+                      {{ cpf }}
                   </div>
                 </div>
                 <q-list separator>
@@ -58,7 +60,9 @@
               <q-separator vertical inset class="q-mx-lg" />
 
               <div class="column items-center justify-between">
-                <q-avatar color="primary" text-color="white" size="72px">W</q-avatar>
+                <q-avatar color="primary" text-color="white" size="72px">
+                  {{ username.charAt(0) }}
+                </q-avatar>
                 <q-btn
                   outline
                   color="primary"
@@ -67,6 +71,7 @@
                   push
                   size="sm"
                   v-close-popup
+                  @click="keycloakStore.logout"
                 />
               </div>
             </div>
@@ -120,13 +125,27 @@
 
 <script setup>
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useKeycloakStore } from "@/stores/keycloak/useKeycloakStore.js";
 import EssentialLink from "components/EssentialLink.vue";
 
 defineOptions({
   name: "MainLayout",
 });
 
+const keycloakStore = useKeycloakStore();
+const {
+    username,
+    cpf
+} = storeToRefs(keycloakStore);
+
 const linksList = [
+  {
+    title: "Página principal",
+    caption: "Ir para a página principal",
+    icon: "home",
+    link: "/",
+  },
   {
     title: "Histórico de cotação",
     caption: "Lista o histórico de cotações",

@@ -23,6 +23,7 @@ module.exports = configure(function (ctx) {
     boot: [
       'i18n',
       'axios',
+      'keycloak',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -49,6 +50,10 @@ module.exports = configure(function (ctx) {
       env: ctx.dev ? {
         URL_API_DEV: 'http://localhost:3000',
         ENVIRONMENT: 'development',
+        KEYCLOAK_URL: 'http://localhost:8080',
+        KEYCLOAK_REALM: 'pesquisa-de-preco',
+        KEYCLOAK_CLIENT_ID: 'client-pesquisa-de-preco',
+        KEYCLOAK_SECRET_ID: 'bw590w56PTP7RXrnDPJ20nHQzL2bNAGq'
       }
       : {
         URL_API_PROD: 'https://',

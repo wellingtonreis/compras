@@ -11,8 +11,9 @@ type Justification struct {
 	Descricao    string             `json:"descricao"`
 	Data         string             `json:"data"`
 	Autor        string             `json:"autor"`
-	Valor        float64            `json:"valor"`
-	ValorInicial float64            `json:"valorInicial"`
+	Valor        *float64           `json:"valor,omitempty"`
+	ValorInicial *float64           `json:"valorInicial,omitempty"`
+	DeleteAt     *time.Time         `json:"deleteAt,omitempty"`
 }
 
 type ItemPurchase struct {
@@ -51,4 +52,5 @@ type ItemPurchase struct {
 	DataResultado                 string             `json:"dataResultado"`
 	DataHoraAtualizacaoUasg       string             `json:"dataHoraAtualizacaoUasg"`
 	Justificativa                 []Justification    `json:"justificativa"`
+	DeleteAt                      *time.Time         `json:"deleteAt,omitempty"`
 }

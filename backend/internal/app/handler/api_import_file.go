@@ -80,7 +80,7 @@ func fileScanning(ext string, tempFileName string) ([][]string, error) {
 	return data, nil
 }
 
-func handlesData(data [][]string) *[]models.CatalogCode {
+func handlesData(data [][]string) (*[]models.CatalogCode, int64) {
 	convertedData := make([]models.CatalogCode, 0)
 	api := dadosabertos.FnDadosAbertosComprasGov()
 
@@ -126,7 +126,7 @@ func handlesData(data [][]string) *[]models.CatalogCode {
 		}()
 	}
 	waitGroup.Wait()
-	return &convertedData
+	return &convertedData, sequence
 }
 
 func saveData(data models.Data) {
@@ -140,10 +140,10 @@ func saveData(data models.Data) {
 	db.InsertData("purchases", items)
 }
 
-func findLatest() *[]models.CatalogCode {
+func findLatest(cotacao int64) *[]models.CatalogCode {
 	db := mongodb.ConnectToMongoDB()
 	defer db.Close()
-	catalogData, err := models.SavePurchaseItemDocuments(db)
+	catalogData, err := models.SavePurchaseItemDocuments(db, cotacao)
 	if err != nil {
 		log.Fatalf("Erro ao tentar cadastrar os documentos: %v", err)
 	}
@@ -183,13 +183,13 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	convertedData := handlesData(data)
+	convertedData, sequence := handlesData(data)
 	responseData := models.Data{
 		Catalog: *convertedData,
 	}
 
 	saveData(responseData)
-	catalogData := findLatest()
+	catalogData := findLatest(sequence)
 
 	filtered := models.Data{
 		Catalog: *catalogData,

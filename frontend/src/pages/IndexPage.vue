@@ -3,10 +3,19 @@
     <q-card flat bordered>
 
       <q-card-section class="q-pt-none">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
+        Bem-vindo {{ username }}, você está logado!
       </q-card-section>
     </q-card>
     
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    username() {
+      return this.$keycloak.tokenParsed?.name;
+    }
+  }
+}
+</script>

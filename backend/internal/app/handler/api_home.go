@@ -10,7 +10,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	params := response.ResponseParams{
 		StatusCode: 200,
 		Message:    "Operação realizada com sucesso.",
-		Embedded:   "Teste 1",
+		Embedded:   "Teste 3",
 		Next:       "http://api.example.com/users?page=2",
 		Total:      0,
 	}

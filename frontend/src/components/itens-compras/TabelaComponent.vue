@@ -14,6 +14,10 @@
       loading-label="Carregando"
       class="table-custom-header-table"
     >
+      <template v-slot:top>
+        <q-btn color="primary" icon="add" label="Adicionar item de compra" />
+      </template>
+
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th v-for="col in props.cols" :key="col.name" :props="props">
@@ -60,6 +64,14 @@
         <q-td :props="props">
           <div class="q-pa-md q-gutter-sm">
             <q-btn color="primary" round flat size="md" icon="history" @click="itensComprasStore.exibirHistorico(props.row)" />
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-remover="props">
+        <q-td :props="props">
+          <div class="q-pa-md q-gutter-sm">
+            <q-btn color="red" round flat size="md" icon="delete" @click="itensComprasStore.removerItemDeCompra(props.rowIndex, cotacao, props.row)" />
           </div>
         </q-td>
       </template>
@@ -120,10 +132,17 @@
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
+import { useKeycloakStore } from "@/stores/keycloak/useKeycloakStore.js";
 import { useItensComprasStore } from "@/stores/itens-compras/useItensComprasStore.js";
+
+const keycloakStore = useKeycloakStore();
+const {
+    username
+} = storeToRefs(keycloakStore);
 
 const itensComprasStore = useItensComprasStore();
 const {
+    autor,
     columns,
     rows,
     erroPrecoUnitario,
@@ -140,6 +159,7 @@ const route = useRoute()
 const cotacao = ref(route.params.cotacao);
 
 onMounted(()=>{
+  autor.value = ref(username)
   itensComprasStore.listaItensCompras(cotacao.value.toString());
 })
 </script>

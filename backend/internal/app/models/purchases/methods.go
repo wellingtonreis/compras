@@ -17,7 +17,7 @@ import (
 
 var schema = mongodb.GetMongoSchema()
 
-func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
+func SavePurchaseItemDocuments(db *mongodb.MongoDB, cotacao int64) ([]CatalogCode, error) {
 	collection := db.Client.Database(schema).Collection("purchases")
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
@@ -31,6 +31,7 @@ func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
 	twelveMonthsAgo := today.AddDate(0, -12, 0)
 
 	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: bson.M{"cotacao": cotacao}}},
 		{{Key: "$match", Value: bson.M{"apresentacao": bson.M{"$exists": true}}}},
 		{{Key: "$addFields", Value: bson.D{
 			{Key: "dadosconsolidados", Value: bson.M{"$filter": bson.M{
@@ -99,14 +100,12 @@ func SavePurchaseItemDocuments(db *mongodb.MongoDB) ([]CatalogCode, error) {
 	}
 	defer cursor.Close(ctx)
 
-	var docs []CatalogCode
-	if err = cursor.All(ctx, &docs); err != nil {
-		return nil, fmt.Errorf("erro ao tentar ler todos os documentos: %v", err)
-	}
-
 	var updatedDocuments []CatalogCode
-
-	for _, doc := range docs {
+	for cursor.Next(ctx) {
+		var doc CatalogCode
+		if err := cursor.Decode(&doc); err != nil {
+			return nil, fmt.Errorf("erro ao decodificar o documento: %v", err)
+		}
 
 		for i := range doc.DadosConsolidados {
 			doc.DadosConsolidados[i].ID = primitive.NewObjectID()
@@ -218,6 +217,7 @@ func ListPurchaseItems(db *mongodb.MongoDB, quotation int64) ([]ItemPurchase, er
 		{{"$project", bson.D{{"_id", 0}, {"dadosconsolidados", 1}}}},
 		{{"$unwind", "$dadosconsolidados"}},
 		{{"$replaceRoot", bson.D{{"newRoot", "$dadosconsolidados"}}}},
+		{{"$match", bson.D{{"deleteat", bson.D{{"$eq", nil}}}}}},
 	}
 
 	cursor, err := collection.Aggregate(ctx, pipeline)
@@ -251,6 +251,41 @@ func UpdatePurchaseItems(db *mongodb.MongoDB, quotation int64, items *ItemPurcha
 	update := bson.M{
 		"$set": bson.M{
 			"dadosconsolidados.$.precounitario": items.PrecoUnitario,
+		},
+		"$push": bson.M{
+			"dadosconsolidados.$.justificativa": items.Justificativa[0],
+		},
+	}
+
+	opts := options.Update().SetUpsert(true)
+	if _, err := collection.UpdateOne(ctx, filter, update, opts); err != nil {
+		return fmt.Errorf("erro ao tentar atualizar o documento: %v", err)
+	}
+
+	return nil
+
+}
+
+func DeletePurchaseItems(db *mongodb.MongoDB, quotation int64, items *ItemPurchase) error {
+	collection := db.Client.Database(schema).Collection("purchases")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	id, err := primitive.ObjectIDFromHex(items.ID.Hex())
+	if err != nil {
+		return fmt.Errorf("erro ao tentar converter o ID para ObjectID: %v", err)
+	}
+
+	now := time.Now().UTC()
+	year, month, day := now.Date()
+	today := time.Date(year, month, day, 0, 0, 0, 0, time.FixedZone("", -3*60*60))
+
+	items.Justificativa[0].ID = primitive.NewObjectID()
+	filter := bson.M{"cotacao": quotation, "dadosconsolidados.id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"dadosconsolidados.$.deleteat": today,
 		},
 		"$push": bson.M{
 			"dadosconsolidados.$.justificativa": items.Justificativa[0],

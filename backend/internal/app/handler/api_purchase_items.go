@@ -50,7 +50,7 @@ func ListPurchaseItemsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(jsonResponse))
 }
 
-func UpdatePurchaseItemsHandler(w http.ResponseWriter, r *http.Request) {
+func UpdatePurchaseItemsJustifyHandler(w http.ResponseWriter, r *http.Request) {
 	quotationStr := chi.URLParam(r, "quotation")
 	quotation, err := strconv.ParseInt(quotationStr, 10, 64)
 	if err != nil {
@@ -66,7 +66,7 @@ func UpdatePurchaseItemsHandler(w http.ResponseWriter, r *http.Request) {
 	db := mongodb.ConnectToMongoDB()
 	defer db.Close()
 
-	err = models.UpdatePurchaseItems(db, quotation, &items)
+	err = models.UpdatePurchaseItemsJustify(db, quotation, &items)
 	if err != nil {
 		log.Fatalf("Erro ao tentar atualizar os documentos: %v", err)
 	}

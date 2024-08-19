@@ -1,6 +1,6 @@
 <template>
     <div>
-      <q-form @submit="historicoCotacaoStore.enviar()" @reset="historicoCotacaoStore.reiniciar()">
+      <q-form @reset="itensComprasStore.reiniciar()">
         <div class="row items-center justify-center">
           <div class="col-12 col-md-12">
             <div class="row q-pa-md items-center justify-left">
@@ -20,6 +20,9 @@
                         @update:model-value="itensComprasStore.selecionaSubcategoria(categoria.value)"
                         hint="Lista suspensa de categorias"
                         dense
+                        bottom-slots
+                        error-message="Por favor, selecione uma categoria"
+                        :error="!validaCategoria"
                     >
                         <template v-slot:no-option>
                             <q-item>
@@ -48,6 +51,9 @@
                         @filter="itensComprasStore.filtraSubcategoria"
                         hint="Lista suspensa de subcategorias"
                         dense
+                        bottom-slots
+                        error-message="Por favor, selecione uma subcategoria"
+                        :error="!validaSubcategoria"
                     >
                         <template v-slot:no-option>
                             <q-item>
@@ -62,10 +68,17 @@
 
             <div class="row q-pa-md items-center justify-left">
                 <div class="col-12 col-md-2 text-right sm:text-left q-mr-md">
-                    <b>Processo SEI:</b>
+                    <b>Número do processo SEI:</b>
                 </div>
                 <div class="col-12 col-md-8">
-                    <q-input outlined v-model="processosei" dense mask="#####.######/####-##" />
+                    <q-input 
+                    outlined 
+                    v-model="processosei" 
+                    @keyup="itensComprasStore.preencheProcessoSei()"
+                    dense 
+                    mask="#####.######/####-##"
+                    error-message="Por favor, adicione um número do processo SEI"
+                    :error="!validaProcessosei" />
                 </div>
             </div>
 
@@ -75,7 +88,7 @@
                 </div>
                 <div class="col-12 col-md-8">
                   <q-input outlined v-model="urlprotocolosei" dense standout bottom-slots
-                    prefix="https://sei.ebserh.gov.br/sei/controlador.php?acao=" mask="#################">
+                    :disable="true" prefix="https://sei.ebserh.gov.br/sei/controlador.php?acao=" mask="#################">
                     <template v-slot:hint>
                       Ex.: https://sei.ebserh.gov.br/sei/controlador.php?acao=protocolo
                     </template>
@@ -112,6 +125,9 @@
     urlprotocolosei,
     opcoesCategorias,
     opcoesSubCategorias,
+    validaCategoria,
+    validaSubcategoria,
+    validaProcessosei
   } = storeToRefs(itensComprasStore);
   
   const categoriaFiltro = toRaw(opcoesCategorias.value);

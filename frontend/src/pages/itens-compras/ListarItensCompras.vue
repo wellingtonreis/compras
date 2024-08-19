@@ -43,7 +43,7 @@
 
       <template v-slot:navigation>
         <q-stepper-navigation>
-          <q-btn @click="$refs.stepper.next()" color="primary" :label="step === 3 ? 'Calcular cotação' : 'Avançar'" />
+          <q-btn @click="nextStep()" color="primary" :label="step === 3 ? 'Calcular cotação' : 'Avançar'" />
           <q-btn v-if="step > 1" flat color="primary" @click="$refs.stepper.previous()" label="Voltar" class="q-ml-sm" />
         </q-stepper-navigation>
       </template>
@@ -69,6 +69,19 @@ import CadastrarComponent from "components/itens-compras/CadastrarComponent.vue"
 
 import { useRoute } from 'vue-router';
 import { ref } from 'vue'
+import { storeToRefs } from "pinia";
+
+import { useItensComprasStore } from "@/stores/itens-compras/useItensComprasStore.js";
+const itensComprasStore = useItensComprasStore();
+const {
+    cotacao,
+    categoria,
+    subcategoria,
+    processosei,
+    validaCategoria,
+    validaSubcategoria,
+    validaProcessosei
+} = storeToRefs(itensComprasStore);
 
 export default {
   components: {
@@ -78,12 +91,66 @@ export default {
   setup () {
     return {
       step: ref(1),
-      cotacao: ref(0)
+      cotacao: cotacao,
+      categoria: categoria,
+      subcategoria: subcategoria,
+      processosei: processosei,
+      validaCategoria: validaCategoria,
+      validaSubcategoria: validaSubcategoria,
+      validaProcessosei: validaProcessosei
     }
   },
-  mounted () {
+  created () {
     const route = useRoute()
     this.cotacao = ref(route.params.cotacao);
+  },
+  methods:{
+    notificaUsuario(msg){
+      this.$q.notify({
+        color: 'negative',
+        position: 'bottom',
+        message: msg,
+        icon: 'report_problem',
+        actions: [
+          { icon: 'close', color: 'white', round: true, handler: () => { /* ... */ } }
+        ]
+      });
+    },
+    nextStep(){
+      const proximoPasso = this.step === 2;
+      if(proximoPasso && this.categoria.value == null){
+        this.notificaUsuario('Selecione uma categoria');
+        this.validaCategoria = false;
+        return;
+      }
+      this.validaCategoria = true;
+
+      if(proximoPasso && this.subcategoria.value == null){
+        this.notificaUsuario('Selecione uma Subcategoria');
+        this.validaSubcategoria = false;
+        return;
+      }
+      this.validaSubcategoria = true;
+      
+      if(proximoPasso && this.processosei == null){
+        this.notificaUsuario('Adicione um número do processo SEI');
+        this.validaProcessosei = false;
+        return;
+      }
+
+      const numeroProcesso = this.processosei?.replace(/[^0-9]/g, '') ?? 0;
+      if(proximoPasso && numeroProcesso.length < 17){
+        this.notificaUsuario('Adicione um número do processo SEI');
+        this.validaProcessosei = false;
+        return;
+      }
+      this.validaProcessosei = true;
+
+      if(proximoPasso){
+        itensComprasStore.salvarClassificacaoSegmento(this.step, this.cotacao)
+      }
+      this.$refs.stepper.next();
+    },
   }
 };
 </script>

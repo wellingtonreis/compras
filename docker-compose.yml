@@ -1,0 +1,130 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - "3000:3000"
+    volumes:
+      - $GOPATH/src/compras/backend:/backend
+    depends_on:
+      - mongodb
+    networks:
+      - compras
+    working_dir: /backend
+    command: air
+
+  src-upload:
+    build:
+      context: ./services/upload
+      dockerfile: Dockerfile
+    container_name: src-upload
+    ports:
+      - "3001:3001"
+    volumes:
+      - $GOPATH/src/compras/services/upload:/upload
+    networks:
+      - compras
+    working_dir: /upload
+    command: air
+  
+  src-govbr:
+    build:
+      context: ./services/govbr
+      dockerfile: Dockerfile
+    container_name: src-govbr
+    ports:
+      - "3002:3002"
+    volumes:
+      - $GOPATH/src/compras/services/govbr:/govbr
+    networks:
+      - compras
+    working_dir: /govbr
+    command: air
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongodb:/data/db
+    networks:
+      - compras
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.2
+    command: start-dev
+    ports:
+      - 8080:8080
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=mysql
+      - KC_DB_URL=jdbc:mysql://mysqldb:3306/keycloak
+      - KC_DB_USERNAME=root
+      - KC_DB_PASSWORD=root
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    networks:
+      - compras
+    extra_hosts:
+      - 'host.docker.internal:172.31.0.1'
+  
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - "8081:9000"
+      - "8082:9001"
+    depends_on:
+      - api
+    volumes:
+      - /data/minio:/data
+    networks:
+      - compras
+    environment:
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: root@123
+    command: server /data --console-address ":9001"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - compras
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  mysqldb:
+    image: mysql:8.0.30-debian
+    volumes:
+      - ./data/mysqldb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=keycloak
+    security_opt:
+      - seccomp:unconfined
+    networks:
+      - compras
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  mongodb_data:
+
+networks:
+  compras:
+    driver: bridge

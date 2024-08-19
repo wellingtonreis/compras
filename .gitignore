@@ -7,6 +7,8 @@ backend/.gitignore
 backend/.air.toml
 backend/.env
 
+data
+
 frontend/.DS_Store
 frontend/.thumbs.db
 frontend/node_modules

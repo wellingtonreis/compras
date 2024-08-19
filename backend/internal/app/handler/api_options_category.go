@@ -5,7 +5,7 @@ import (
 
 	"github.com/wellingtonreis/compras/pkg/response"
 
-	models "github.com/wellingtonreis/compras/internal/app/models/classification"
+	models "github.com/wellingtonreis/compras/internal/app/models/classification_segment"
 )
 
 func ListOptionsCategoryHandler(w http.ResponseWriter, r *http.Request) {

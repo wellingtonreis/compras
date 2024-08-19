@@ -15,6 +15,8 @@ import (
 	date_custom "github.com/wellingtonreis/compras/pkg/date_custom"
 	dadosabertos "github.com/wellingtonreis/compras/pkg/service/compras/dados_abertos"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"github.com/wellingtonreis/compras/internal/app/platform/database/mongodb"
 	"github.com/wellingtonreis/compras/pkg/importer"
 	"github.com/wellingtonreis/compras/pkg/response"
@@ -113,8 +115,8 @@ func handlesData(data [][]string) (*[]models.CatalogCode, int64) {
 				Quantidade:   record[2],
 				Cotacao:      sequence,
 				Hu:           "",
-				Categoria:    "",
-				Subcategoria: "",
+				Categoria:    primitive.NilObjectID,
+				Subcategoria: primitive.NilObjectID,
 				DataHora:     today,
 				Situacao:     "Iniciada",
 				ProcessoSei:  "",

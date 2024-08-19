@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import ajaxItensCompras from "@/http/ajax-itens-compras/request.js";
 import ajaxCategoriaEhSubcategoria from "@/http/ajax-categoria-subcategoria/request.js";
+import ajaxClassificacaoSegmento from "@/http/ajax-historico-cotacao/request.js";
 
 import { Dialog, Notify } from 'quasar'
 
 export const useItensComprasStore = defineStore('useItensComprasStore', {
   state: () => ({
+    cotacao: 0,
     autor: "Anônimo",
     categorias: [],
     opcoesCategorias: [],
@@ -15,6 +17,9 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
     subcategoria: "",
     processosei: "",
     urlprotocolosei: "",
+    validaCategoria: true,
+    validaSubcategoria: true,
+    validaProcessosei: true,
     columns: [
       {
         name: "catmat",
@@ -351,5 +356,46 @@ export const useItensComprasStore = defineStore('useItensComprasStore', {
         return { "value": val, "label": subcategoria.name };
       })
     },
+    reiniciar(){
+      this.categoria = "";
+      this.subcategoria = "";
+      this.processosei = "";
+      this.urlprotocolosei = "";
+    },
+    salvarClassificacaoSegmento(step, cotacao){
+
+      const historicoCotacao = {
+        "cotacao": cotacao,
+        "situacao": 1,
+        "categoria": this.categoria.value,
+        "subcategoria": this.subcategoria.value,
+        "processosei": this.processosei,
+      }
+      ajaxClassificacaoSegmento.atualizar(historicoCotacao, cotacao).then((res)=>{
+        if(res.data?.status_code == 200){
+          Notify.create({
+            message: `Classificação salva com sucesso!`,
+            color: 'positive',
+            position: 'top-right',
+            timeout: 3500,
+            textColor: 'white'
+          })
+          this.reiniciar()
+          step()
+        }
+      }
+      ).catch(error => {
+        Notify.create({
+          message: 'Erro ao tentar salvar classificação!',
+          color: 'negative',
+          position: 'top-right',
+          timeout: 3500,
+          textColor: 'white'
+        })
+      })
+    },
+    preencheProcessoSei(){
+      this.urlprotocolosei = this.processosei.replace(/[^0-9]/g, '');
+    }
   }
 });

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 type DadosAbertosComprasGov struct {
@@ -21,6 +22,10 @@ func FnDadosAbertosComprasGov() *DadosAbertosComprasGov {
 }
 
 func (d *DadosAbertosComprasGov) ConsultarMaterial(catmat string) ([]entity.ItemPurchase, error) {
+
+	d.client = &http.Client{
+		Timeout: 40 * time.Second,
+	}
 
 	page := 1
 
@@ -47,7 +52,6 @@ func (d *DadosAbertosComprasGov) ConsultarMaterial(catmat string) ([]entity.Item
 		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 			return nil, fmt.Errorf("erro ao decodificar a resposta JSON: %v", err)
 		}
-
 		data = append(data, result.Resultado...)
 
 		remainingPages := result.PaginasRestantes
@@ -57,6 +61,5 @@ func (d *DadosAbertosComprasGov) ConsultarMaterial(catmat string) ([]entity.Item
 			break
 		}
 	}
-
 	return data, nil
 }

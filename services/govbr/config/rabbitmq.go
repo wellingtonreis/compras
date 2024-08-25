@@ -9,6 +9,8 @@ import (
 )
 
 var RabbitMQUrl string
+var RabbitMQQueue string
+var RabbitMQExchange string
 
 func RabbitMQ() {
 
@@ -23,5 +25,15 @@ func RabbitMQ() {
 	if RabbitMQUrl == "" {
 		RabbitMQUrl = "amqp://"
 		log.Println("RabbitMQUrl não configurado")
+	}
+	RabbitMQQueue = os.Getenv("RABBITMQ_QUEUE")
+	if RabbitMQQueue == "" {
+		RabbitMQQueue = "catalog"
+		log.Println("RabbitMQQueue não configurado")
+	}
+	RabbitMQExchange = os.Getenv("RABBITMQ_EXCHANGE")
+	if RabbitMQExchange == "" {
+		RabbitMQExchange = "amq.direct"
+		log.Println("RabbitMQExchange não configurado")
 	}
 }

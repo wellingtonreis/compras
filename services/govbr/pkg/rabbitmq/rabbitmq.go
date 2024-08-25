@@ -33,10 +33,10 @@ func Consume(ch *amqp.Channel, out chan<- amqp.Delivery, queue string) error {
 	return nil
 }
 
-func Publish(ch *amqp.Channel, body string, exName string) error {
+func Publish(ch *amqp.Channel, body string, exName string, key string) error {
 	err := ch.Publish(
 		exName,
-		"",
+		key,
 		false,
 		false,
 		amqp.Publishing{

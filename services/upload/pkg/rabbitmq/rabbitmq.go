@@ -1,6 +1,8 @@
 package rabbitmq
 
-import amqp "github.com/rabbitmq/amqp091-go"
+import (
+	amqp "github.com/rabbitmq/amqp091-go"
+)
 
 func OpenChannel(url string) (*amqp.Channel, error) {
 	conn, err := amqp.Dial(url)
@@ -33,10 +35,10 @@ func Consume(ch *amqp.Channel, out chan<- amqp.Delivery, queue string) error {
 	return nil
 }
 
-func Publish(ch *amqp.Channel, body string, exName string) error {
+func Publish(ch *amqp.Channel, body string, exName string, key string) error {
 	err := ch.Publish(
 		exName,
-		"",
+		key,
 		false,
 		false,
 		amqp.Publishing{

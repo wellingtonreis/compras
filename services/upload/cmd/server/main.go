@@ -10,8 +10,7 @@ import (
 )
 
 func main() {
-	config.Load()
 	app := fiber.New()
 	routes.SetupRoutes(app)
-	log.Fatal(app.Listen(":3001"))
+	log.Fatal(app.Listen(":" + config.Env.WebServerPort))
 }

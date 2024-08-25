@@ -7,5 +7,5 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
-	app.Get("/", handlers.Consumer)
+	app.Get("/quotation/:sequence/get", handlers.Consumer)
 }

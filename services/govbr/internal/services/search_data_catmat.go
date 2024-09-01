@@ -28,11 +28,16 @@ func (cm *SearchDataCatmat) Search() ([]entity.ItemPurchase, error) {
 }
 
 type ChannelDataItemPurchase struct {
-	Channel chan []entity.ItemPurchase
+	Channel chan ItemPurchaseMessage
 	Result  []entity.ItemPurchase
 }
 
-func (c *ChannelDataItemPurchase) ChannelDataItemPurchase() {
+type ItemPurchaseMessage struct {
+	Items     []entity.ItemPurchase `json:"items"`
+	Quotation int64                 `json:"quotation"`
+}
+
+func (c *ChannelDataItemPurchase) ChannelDataItemPurchase(sequence int64) {
 
 	items := make([]entity.ItemPurchase, 0)
 	for _, item := range c.Result {
@@ -75,5 +80,9 @@ func (c *ChannelDataItemPurchase) ChannelDataItemPurchase() {
 		items = append(items, itemPopulated)
 	}
 
-	c.Channel <- items
+	itemPurchaseMessage := ItemPurchaseMessage{
+		Items:     items,
+		Quotation: sequence,
+	}
+	c.Channel <- itemPurchaseMessage
 }

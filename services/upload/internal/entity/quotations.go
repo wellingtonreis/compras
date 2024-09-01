@@ -7,13 +7,18 @@ import (
 )
 
 type QuotationHistory struct {
-	ID           primitive.ObjectID `bson:"_id,omitempty"`
-	Cotacao      int64              `json:"cotacao"`
-	Hu           string             `json:"hu,omitempty"`
-	Categoria    primitive.ObjectID `json:"categoria,omitempty"`
-	Subcategoria primitive.ObjectID `json:"subcategoria,omitempty"`
-	Situacao     string             `json:"situacao"`
-	Processosei  string             `json:"processosei"`
-	Autor        string             `json:"autor"`
-	Datahora     time.Time          `json:"datahora,omitempty"`
+	ID                primitive.ObjectID `json:"_id,omitempty"`
+	Catmat            string             `json:"catmat,omitempty"`
+	Apresentacao      string             `json:"apresentacao,omitempty"`
+	Quantidade        string             `json:"quantidade,omitempty"`
+	Cotacao           int64              `json:"cotacao"`
+	Hu                string             `json:"hu,omitempty"`
+	Categoria         primitive.ObjectID `json:"categoria,omitempty"`
+	Subcategoria      primitive.ObjectID `json:"subcategoria,omitempty"`
+	DataHora          time.Time          `json:"datahora,omitempty"`
+	Situacao          string             `json:"situacao"`
+	ProcessoSei       string             `json:"processosei,omitempty"`
+	Autor             string             `json:"autor,omitempty"`
+	DadosAPI          []ItemPurchase     `json:"dadosapi,omitempty"`
+	DadosConsolidados []ItemPurchase     `json:"dadosconsolidados,omitempty"`
 }

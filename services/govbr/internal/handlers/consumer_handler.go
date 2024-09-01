@@ -30,15 +30,9 @@ func Consumer(ctx *fiber.Ctx) error {
 	}
 	var wg sync.WaitGroup
 
-	channel := make(chan []entity.ItemPurchase)
+	channel := make(chan services.ItemPurchaseMessage)
 	msgs := make(chan amqp.Delivery)
 	go rabbitmq.Consume(ch, msgs, "catmats")
-
-	go func() {
-		for msg := range msgs {
-			msgs <- msg
-		}
-	}()
 
 	for {
 		select {
@@ -68,9 +62,9 @@ func Consumer(ctx *fiber.Ctx) error {
 						Channel: channel,
 						Result:  result,
 					}
-					go svcChannelDataItemPurchase.ChannelDataItemPurchase()
-					item := <-svcChannelDataItemPurchase.Channel
+					go svcChannelDataItemPurchase.ChannelDataItemPurchase(sequence)
 
+					item := <-svcChannelDataItemPurchase.Channel
 					jsonData, err := json.Marshal(item)
 					if err != nil {
 						log.Fatalf("Falha ao converter a struct em JSON %v", err)
@@ -84,7 +78,7 @@ func Consumer(ctx *fiber.Ctx) error {
 					log.Println("Finalizado o código de catálogo número: ", catmat.Catmat)
 				}()
 
-				msg.Ack(true)
+				msg.Ack(false)
 			}
 		case <-time.After(time.Second * 2):
 
@@ -92,6 +86,12 @@ func Consumer(ctx *fiber.Ctx) error {
 				wg.Wait()
 				ch.Close()
 				fmt.Println("Conexão com rabbitmq fechada!")
+
+				agent := fiber.Get("http://src-persist:3003/persist-data")
+				_, _, errs := agent.Bytes()
+				if len(errs) > 0 {
+					log.Fatalf("Erro ao chamar o serviço de persistência: %v", errs)
+				}
 			}()
 
 			return ctx.Status(fiber.StatusOK).JSON(fiber.Map{

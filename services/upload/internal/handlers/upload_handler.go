@@ -13,12 +13,6 @@ import (
 )
 
 func Upload(ctx *fiber.Ctx) error {
-
-	sequence, err := services.CreatePurchasesQuotation()
-	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).SendString("Falha ao criar a cotação")
-	}
-
 	file, err := ctx.FormFile("file")
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -56,6 +50,11 @@ func Upload(ctx *fiber.Ctx) error {
 	data, err := svcReaderFileTemp.ReadFileTempService(context)
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).SendString("Falha ao ler o arquivo temporário")
+	}
+
+	sequence, err := services.SequenceQuotation()
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).SendString("Falha ao criar a sequência de cotação")
 	}
 
 	svcPublishMessages := &services.PublishMessagesRabbitMQService{

@@ -1,20 +1,18 @@
 version: '3.8'
 
 services:
-  api:
+  src-persist:
     build:
-      context: ./backend
+      context: ./services/persist
       dockerfile: Dockerfile
-    container_name: api
+    container_name: src-persist
     ports:
-      - "3000:3000"
+      - "3003:3003"
     volumes:
-      - $GOPATH/src/compras/backend:/backend
-    depends_on:
-      - mongodb
+      - $GOPATH/src/compras/services/persist:/persist
     networks:
       - compras
-    working_dir: /backend
+    working_dir: /persist
     command: air
 
   src-upload:
@@ -81,8 +79,6 @@ services:
     ports:
       - "8081:9000"
       - "8082:9001"
-    depends_on:
-      - api
     volumes:
       - /data/minio:/data
     networks:

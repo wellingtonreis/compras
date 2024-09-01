@@ -2,7 +2,7 @@ package services
 
 import (
 	"compras/services/upload/config"
-	"compras/services/upload/internal/entity"
+	"compras/services/upload/internal/dto"
 	"compras/services/upload/pkg/rabbitmq"
 	"encoding/json"
 	"fmt"
@@ -24,18 +24,20 @@ func (params *PublishMessagesRabbitMQService) PublishMessages(data [][]string) (
 	}
 	var wg sync.WaitGroup
 
-	catmat := make(chan entity.Catmat, len(data))
+	catmat := make(chan dto.Catmat, len(data))
 	go func() {
 		for i, record := range data {
 			if i == 0 {
 				continue
 			}
-			item := entity.Catmat{
+			item := dto.Catmat{
 				Quotation:    params.Quotation,
 				Catmat:       record[0],
 				Apresentacao: record[1],
 				Quantidade:   record[2],
 			}
+
+			CreatePurchasesQuotation(&item)
 			catmat <- item
 		}
 	}()

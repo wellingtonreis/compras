@@ -1,6 +1,7 @@
 package services
 
 import (
+	"compras/services/upload/internal/dto"
 	"compras/services/upload/internal/entity"
 	"compras/services/upload/internal/platform/database/mongodb"
 	"compras/services/upload/internal/repository"
@@ -9,9 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-const situation = "iniciada"
-
-func CreatePurchasesQuotation() (int64, error) {
+func SequenceQuotation() (int64, error) {
 
 	db := mongodb.ConnectToMongoDB()
 	defer db.Close()
@@ -21,22 +20,32 @@ func CreatePurchasesQuotation() (int64, error) {
 		log.Fatal("Erro ao tentar cadastrar a sequencia de identificação:", err)
 	}
 
-	data := &entity.QuotationHistory{
-		ID:          primitive.NewObjectID(),
-		Cotacao:     sequence,
-		Hu:          "",
-		Situacao:    situation,
-		Processosei: "",
-		Autor:       "",
+	return sequence, nil
+}
+
+func CreatePurchasesQuotation(catmat *dto.Catmat) error {
+
+	db := mongodb.ConnectToMongoDB()
+	defer db.Close()
+
+	quotation := entity.QuotationHistory{
+		ID:           primitive.NewObjectID(),
+		Catmat:       catmat.Catmat,
+		Apresentacao: catmat.Apresentacao,
+		Quantidade:   catmat.Quantidade,
+		Cotacao:      catmat.Quotation,
+		Situacao:     "iniciada",
 	}
 
 	repository := &repository.MongoDB{
 		Client: db.Client,
 	}
-	err = repository.Save(data)
+
+	err := repository.Save(&quotation)
 	if err != nil {
 		log.Fatal("Erro ao tentar salvar a cotação:", err)
-		return 0, err
+		return err
 	}
-	return sequence, nil
+
+	return nil
 }
